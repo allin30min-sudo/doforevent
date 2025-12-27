@@ -66,59 +66,106 @@
         </div>
     </section>
 
-    <!-- City & Service Search Section -->
-    <!-- Premium Search Section -->
+    <!-- Guided Search Section -->
     <section class="section"
         style="background: linear-gradient(135deg, rgba(239, 68, 68, 0.05) 0%, rgba(245, 158, 11, 0.05) 100%);">
         <div class="container">
             <div class="text-center mb-2xl scroll-animate">
                 <h2>Find Your Perfect Event Service</h2>
-                <p>Search by city or service to discover tailored event solutions</p>
+                <p>Follow the steps to discover tailored event solutions</p>
             </div>
 
-            <div class="premium-search-container">
-                <!-- City Search Box -->
-                <div class="search-box">
-                    <div class="search-icon">📍</div>
-                    <div class="search-input-wrapper">
-                        <label for="citySearchInput" class="search-label">Search City</label>
-                        <input type="text" id="citySearchInput" class="search-input" placeholder="Search your city..."
-                            autocomplete="off">
-                        <div id="citySuggestions" class="search-suggestions"></div>
+            <div class="step-search-container">
+                <!-- Step 1: Service Search -->
+                <div class="search-step" id="serviceStep">
+                    <div class="step-number">1</div>
+                    <div class="search-box" id="serviceSearchBox">
+                        <div class="search-icon">🎯</div>
+                        <div class="search-input-wrapper">
+                            <label for="serviceSearchInput" class="search-label">Select Service</label>
+                            <input type="text" id="serviceSearchInput" class="search-input"
+                                placeholder="Search for event service..." autocomplete="off">
+                            <div id="serviceSuggestions" class="search-suggestions"></div>
+                        </div>
+                    </div>
+                    <div class="selected-display" id="selectedServiceDisplay" style="display: none;">
+                        <span class="selected-text" id="selectedServiceText"></span>
+                        <button class="change-btn" onclick="clearServiceSelection()">Change</button>
                     </div>
                 </div>
 
-                <div class="search-divider">
-                    <span>OR</span>
-                </div>
+                <div class="step-arrow">→</div>
 
-                <!-- Service Search Box -->
-                <div class="search-box">
-                    <div class="search-icon">🎯</div>
-                    <div class="search-input-wrapper">
-                        <label for="serviceSearchInput" class="search-label">Search Service</label>
-                        <input type="text" id="serviceSearchInput" class="search-input" placeholder="Search service..."
-                            autocomplete="off">
-                        <div id="serviceSuggestions" class="search-suggestions"></div>
+                <!-- Step 2: City Search -->
+                <div class="search-step" id="cityStep">
+                    <div class="step-number">2</div>
+                    <div class="search-box disabled" id="citySearchBox">
+                        <div class="search-icon">📍</div>
+                        <div class="search-input-wrapper">
+                            <label for="citySearchInput" class="search-label">Select City</label>
+                            <input type="text" id="citySearchInput" class="search-input"
+                                placeholder="Search your city..." autocomplete="off" disabled>
+                            <div id="citySuggestions" class="search-suggestions"></div>
+                        </div>
+                    </div>
+                    <div class="selected-display" id="selectedCityDisplay" style="display: none;">
+                        <span class="selected-text" id="selectedCityText"></span>
+                        <button class="change-btn" onclick="clearCitySelection()">Change</button>
                     </div>
                 </div>
-            </div>
 
-            <!-- Selected Info Display -->
-            <div id="selectedInfo" class="selected-info" style="display: none;">
-                <div class="selected-badge" id="selectedCityBadge"></div>
-                <div class="selected-badge" id="selectedServiceBadge"></div>
+                <div class="step-arrow">→</div>
+
+                <!-- Step 3: Search Button -->
+                <div class="search-step" id="searchButtonStep">
+                    <div class="step-number">3</div>
+                    <button id="finalSearchBtn" class="btn btn-primary btn-lg" style="width: 100%; display: none;">
+                        <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24" style="margin-right: 8px;">
+                            <path
+                                d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z" />
+                        </svg>
+                        Search Now
+                    </button>
+                    <div class="search-hint" id="searchHint">
+                        <p
+                            style="text-align: center; color: var(--color-dark-3); font-size: var(--text-sm); margin: 0;">
+                            Select service and city to continue
+                        </p>
+                    </div>
+                </div>
             </div>
         </div>
 
         <style>
-            .premium-search-container {
-                max-width: 900px;
+            .step-search-container {
+                max-width: 1100px;
                 margin: 0 auto;
                 display: grid;
-                grid-template-columns: 1fr auto 1fr;
-                gap: var(--spacing-xl);
+                grid-template-columns: 1fr auto 1fr auto 200px;
+                gap: var(--spacing-lg);
                 align-items: center;
+            }
+
+            .search-step {
+                position: relative;
+            }
+
+            .step-number {
+                position: absolute;
+                top: -15px;
+                left: 20px;
+                background: var(--color-primary);
+                color: white;
+                width: 30px;
+                height: 30px;
+                border-radius: var(--radius-full);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-weight: 700;
+                font-size: var(--text-sm);
+                z-index: 10;
+                box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
             }
 
             .search-box {
@@ -133,7 +180,7 @@
                 align-items: flex-start;
             }
 
-            .search-box:hover {
+            .search-box:not(.disabled):hover {
                 transform: translateY(-5px);
                 box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
                 border-color: var(--color-primary);
@@ -142,6 +189,12 @@
             .search-box:focus-within {
                 border-color: var(--color-primary);
                 box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.1);
+            }
+
+            .search-box.disabled {
+                opacity: 0.5;
+                pointer-events: none;
+                background: var(--color-light-1);
             }
 
             .search-icon {
@@ -184,21 +237,15 @@
                 font-weight: 400;
             }
 
-            .search-divider {
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                gap: var(--spacing-sm);
+            .search-input:disabled {
+                background: transparent;
+                cursor: not-allowed;
             }
 
-            .search-divider span {
-                background: white;
-                padding: var(--spacing-sm) var(--spacing-md);
-                border-radius: var(--radius-full);
-                font-weight: 700;
+            .step-arrow {
+                font-size: 2rem;
                 color: var(--color-dark-3);
-                font-size: var(--text-sm);
-                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+                font-weight: 700;
             }
 
             .search-suggestions {
@@ -239,44 +286,54 @@
                 background: var(--color-light-1);
             }
 
-            .suggestion-item.selected {
+            .selected-display {
+                margin-top: var(--spacing-md);
+                background: rgba(239, 68, 68, 0.1);
+                padding: var(--spacing-md);
+                border-radius: var(--radius-md);
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            .selected-text {
+                font-weight: 600;
+                color: var(--color-primary);
+            }
+
+            .change-btn {
+                background: white;
+                border: 2px solid var(--color-primary);
+                color: var(--color-primary);
+                padding: var(--spacing-xs) var(--spacing-md);
+                border-radius: var(--radius-md);
+                cursor: pointer;
+                font-weight: 600;
+                font-size: var(--text-sm);
+                transition: all 0.3s ease;
+            }
+
+            .change-btn:hover {
                 background: var(--color-primary);
                 color: white;
             }
 
-            .selected-info {
-                margin-top: var(--spacing-xl);
-                display: flex;
-                justify-content: center;
-                gap: var(--spacing-md);
-                flex-wrap: wrap;
+            .search-hint {
+                margin-top: var(--spacing-md);
             }
 
-            .selected-badge {
-                background: white;
-                padding: var(--spacing-sm) var(--spacing-lg);
-                border-radius: var(--radius-full);
-                border: 2px solid var(--color-primary);
-                color: var(--color-primary);
-                font-weight: 600;
-                display: flex;
-                align-items: center;
-                gap: var(--spacing-sm);
-                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            }
-
-            @media (max-width: 768px) {
-                .premium-search-container {
+            @media (max-width: 1024px) {
+                .step-search-container {
                     grid-template-columns: 1fr;
-                    gap: var(--spacing-lg);
+                    gap: var(--spacing-xl);
                 }
 
-                .search-divider {
+                .step-arrow {
                     display: none;
                 }
 
-                .search-box {
-                    padding: var(--spacing-lg);
+                #searchButtonStep {
+                    margin-top: var(--spacing-lg);
                 }
             }
         </style>
@@ -402,67 +459,20 @@
     <!-- Services Page Initialization -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            // Initialize city search
-            const citySearchInput = document.getElementById('citySearchInput');
-            const citySuggestions = document.getElementById('citySuggestions');
+            // Guided Step-by-Step Search Logic
+            let selectedServiceData = null;
+            let selectedCityData = null;
 
-            citySearchInput.addEventListener('input', (e) => {
-                const query = e.target.value;
-                if (query.length < 2) {
-                    citySuggestions.innerHTML = '';
-                    citySuggestions.style.display = 'none';
-                    return;
-                }
-
-                const results = searchCities(query);
-                if (results.length === 0) {
-                    citySuggestions.style.display = 'none';
-                    return;
-                }
-
-                citySuggestions.innerHTML = results.map(city => `
-                    <div class="suggestion-item" data-city="${city.name}" data-emoji="${city.emoji}">
-                        <span style="font-size: 1.5rem; margin-right: 10px;">${city.emoji}</span>
-                        <span>${city.name}</span>
-                    </div>
-                `).join('');
-                citySuggestions.style.display = 'block';
-
-                // Add click handlers
-                citySuggestions.querySelectorAll('.suggestion-item').forEach(item => {
-                    item.addEventListener('click', () => {
-                        const cityName = item.dataset.city;
-                        const emoji = item.dataset.emoji;
-                        cityService.setSelectedCity(cityName, emoji);
-                        window.location.href = `services/city-categories.html?city=${encodeURIComponent(cityName)}`;
-                    });
-                });
-            });
-
-            // Initialize service search
             const serviceSearchInput = document.getElementById('serviceSearchInput');
             const serviceSuggestions = document.getElementById('serviceSuggestions');
+            const citySearchInput = document.getElementById('citySearchInput');
+            const citySuggestions = document.getElementById('citySuggestions');
+            const finalSearchBtn = document.getElementById('finalSearchBtn');
 
+            // 1. Service Search Handler
             if (serviceSearchInput && serviceSuggestions) {
                 serviceSearchInput.addEventListener('input', (e) => {
                     const query = e.target.value;
-
-                    // Check if city is selected when searching for service
-                    if (query.length >= 1 && !cityService.hasSelectedCity()) {
-                        // Show alert and open city modal
-                        serviceSuggestions.innerHTML = `
-                            <div class="suggestion-item" style="background: rgba(239, 68, 68, 0.1); cursor: default; flex-direction: column; align-items: flex-start;">
-                                <strong style="color: var(--color-primary);">⚠️ City Selection Required</strong>
-                                <p style="margin: var(--spacing-xs) 0 0; font-size: var(--text-sm);">Please select your city first to search for services.</p>
-                                <button class="btn btn-primary btn-sm" onclick="openCityModal()" style="margin-top: var(--spacing-sm);">
-                                    Select City
-                                </button>
-                            </div>
-                        `;
-                        serviceSuggestions.classList.add('active');
-                        return;
-                    }
-
                     if (query.length < 2) {
                         serviceSuggestions.innerHTML = '';
                         serviceSuggestions.classList.remove('active');
@@ -475,35 +485,121 @@
                         return;
                     }
 
-                    const selectedCity = cityService.getSelectedCity();
                     serviceSuggestions.innerHTML = results.map(service => `
-                        <div class="suggestion-item" data-url="${service.url}">
+                        <div class="suggestion-item" data-url="${service.url}" data-name="${service.name}">
                             <strong>${service.name}</strong>
                             <span style="color: var(--color-dark-3); font-size: var(--text-sm);">${service.category}</span>
                         </div>
                     `).join('');
                     serviceSuggestions.classList.add('active');
 
-                    // Add click handlers
                     serviceSuggestions.querySelectorAll('.suggestion-item').forEach(item => {
                         item.addEventListener('click', () => {
-                            // Check if city is selected before navigation
-                            if (!cityService.hasSelectedCity()) {
-                                // Open city modal
-                                openCityModal();
+                            selectedServiceData = {
+                                url: item.dataset.url,
+                                name: item.dataset.name
+                            };
 
-                                // Store the service URL to navigate after city selection
-                                const url = item.dataset.url;
-                                sessionStorage.setItem('pendingServiceUrl', url);
+                            // Update UI
+                            document.getElementById('serviceSearchBox').style.display = 'none';
+                            document.getElementById('selectedServiceDisplay').style.display = 'flex';
+                            document.getElementById('selectedServiceText').textContent = selectedServiceData.name;
+                            serviceSuggestions.classList.remove('active');
 
-                                return;
-                            }
+                            // Enable Step 2
+                            document.getElementById('citySearchBox').classList.remove('disabled');
+                            citySearchInput.disabled = false;
+                            citySearchInput.focus();
 
-                            const url = item.dataset.url;
-                            const city = cityService.getSelectedCity();
-                            window.location.href = getServiceURL(url, city);
+                            checkFinalStep();
                         });
                     });
+                });
+            }
+
+            // 2. City Search Handler
+            if (citySearchInput && citySuggestions) {
+                citySearchInput.addEventListener('input', (e) => {
+                    const query = e.target.value;
+                    if (query.length < 2) {
+                        citySuggestions.innerHTML = '';
+                        citySuggestions.classList.remove('active');
+                        return;
+                    }
+
+                    const results = searchCities(query);
+                    if (results.length === 0) {
+                        citySuggestions.classList.remove('active');
+                        return;
+                    }
+
+                    citySuggestions.innerHTML = results.map(city => `
+                        <div class="suggestion-item" data-name="${city.name}" data-emoji="${city.emoji}">
+                            <span style="font-size: 1.5rem; margin-right: 10px;">${city.emoji}</span>
+                            <strong>${city.name}</strong>
+                        </div>
+                    `).join('');
+                    citySuggestions.classList.add('active');
+
+                    citySuggestions.querySelectorAll('.suggestion-item').forEach(item => {
+                        item.addEventListener('click', () => {
+                            selectedCityData = {
+                                name: item.dataset.name,
+                                emoji: item.dataset.emoji
+                            };
+
+                            // Update UI
+                            document.getElementById('citySearchBox').style.display = 'none';
+                            document.getElementById('selectedCityDisplay').style.display = 'flex';
+                            document.getElementById('selectedCityText').textContent = `${selectedCityData.emoji} ${selectedCityData.name}`;
+                            citySuggestions.classList.remove('active');
+
+                            checkFinalStep();
+                        });
+                    });
+                });
+            }
+
+            function checkFinalStep() {
+                if (selectedServiceData && selectedCityData) {
+                    finalSearchBtn.style.display = 'flex';
+                    finalSearchBtn.style.alignItems = 'center';
+                    finalSearchBtn.style.justifyContent = 'center';
+                    document.getElementById('searchHint').style.display = 'none';
+                } else {
+                    finalSearchBtn.style.display = 'none';
+                    document.getElementById('searchHint').style.display = 'block';
+                }
+            }
+
+            window.clearServiceSelection = function () {
+                selectedServiceData = null;
+                document.getElementById('serviceSearchBox').style.display = 'flex';
+                document.getElementById('selectedServiceDisplay').style.display = 'none';
+                serviceSearchInput.value = '';
+
+                // Reset city
+                window.clearCitySelection();
+                document.getElementById('citySearchBox').classList.add('disabled');
+                citySearchInput.disabled = true;
+
+                checkFinalStep();
+            };
+
+            window.clearCitySelection = function () {
+                selectedCityData = null;
+                document.getElementById('citySearchBox').style.display = 'flex';
+                document.getElementById('selectedCityDisplay').style.display = 'none';
+                citySearchInput.value = '';
+                checkFinalStep();
+            };
+
+            if (finalSearchBtn) {
+                finalSearchBtn.addEventListener('click', () => {
+                    if (selectedServiceData && selectedCityData) {
+                        cityService.setSelectedCity(selectedCityData.name, selectedCityData.emoji);
+                        window.location.href = getServiceURL(selectedServiceData.url, selectedCityData.name);
+                    }
                 });
             }
 
@@ -586,38 +682,6 @@
                 exploreMoreBtn.textContent = moreCitiesGrid.style.display === 'none' ? 'Explore More Cities' : 'Show Less';
             });
 
-            // Add styles for suggestions
-            const style = document.createElement('style');
-            style.textContent = `
-                .search-suggestions {
-                    position: absolute;
-                    top: 100%;
-                    left: 0;
-                    right: 0;
-                    background: white;
-                    border: 1px solid var(--color-light-3);
-                    border-radius: var(--radius-md);
-                    margin-top: 5px;
-                    max-height: 300px;
-                    overflow-y: auto;
-                    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-                    z-index: 100;
-                    display: none;
-                }
-
-                .suggestion-item {
-                    padding: var(--spacing-md);
-                    cursor: pointer;
-                    transition: background 0.2s ease;
-                    display: flex;
-                    align-items: center;
-                }
-
-                .suggestion-item:hover {
-                    background: var(--color-light-2);
-                }
-            `;
-            document.head.appendChild(style);
         });
     </script>
 </body>

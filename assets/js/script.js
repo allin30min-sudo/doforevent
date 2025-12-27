@@ -350,5 +350,149 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
+// ========== Infinite Auto-Sliding Categories Carousel ==========
+document.addEventListener('DOMContentLoaded', () => {
+    const containers = document.querySelectorAll('.section div[style*="overflow-x: auto"]');
+
+    containers.forEach(container => {
+        const originalCards = container.querySelectorAll('.card');
+        if (originalCards.length === 0) return;
+
+        // Clone cards twice for seamless infinite loop
+        const cardsArray = Array.from(originalCards);
+        cardsArray.forEach(card => {
+            const clone = card.cloneNode(true);
+            container.appendChild(clone);
+        });
+
+        const allCards = container.querySelectorAll('.card');
+        const originalLength = originalCards.length;
+        let currentPosition = 0;
+        let autoSlideInterval;
+        let isAnimating = false;
+
+        // Get card width including gap
+        function getCardWidth() {
+            const card = allCards[0];
+            const gap = parseInt(getComputedStyle(container).gap) || 24;
+            return card.offsetWidth + gap;
+        }
+
+        // Auto-slide function
+        function autoSlide() {
+            if (isAnimating) return;
+            isAnimating = true;
+
+            currentPosition++;
+            const cardWidth = getCardWidth();
+
+            // Smooth scroll to next position
+            container.scrollTo({
+                left: currentPosition * cardWidth,
+                behavior: 'smooth'
+            });
+
+            // After animation, check if we need to reset
+            setTimeout(() => {
+                // If we've scrolled past the original cards, reset seamlessly
+                if (currentPosition >= originalLength) {
+                    currentPosition = 0;
+                    container.scrollTo({
+                        left: 0,
+                        behavior: 'auto' // Instant, invisible reset
+                    });
+                }
+                isAnimating = false;
+            }, 600); // Match CSS animation duration
+        }
+
+        // Start auto-slide
+        function startAutoSlide() {
+            stopAutoSlide();
+            autoSlideInterval = setInterval(autoSlide, 3000);
+        }
+
+        // Stop auto-slide
+        function stopAutoSlide() {
+            if (autoSlideInterval) {
+                clearInterval(autoSlideInterval);
+                autoSlideInterval = null;
+            }
+        }
+
+        // Pause on hover
+        container.addEventListener('mouseenter', stopAutoSlide);
+        container.addEventListener('mouseleave', startAutoSlide);
+
+        // Pause on manual scroll
+        let scrollTimeout;
+        container.addEventListener('scroll', () => {
+            if (!isAnimating) {
+                stopAutoSlide();
+                clearTimeout(scrollTimeout);
+                scrollTimeout = setTimeout(startAutoSlide, 3000);
+            }
+        }, { passive: true });
+
+        // Initialize carousel
+        container.scrollTo({ left: 0, behavior: 'auto' });
+        startAutoSlide();
+    });
+});
+
+
+// ========== Category Cards City-Aware Redirect ==========
+document.addEventListener('DOMContentLoaded', () => {
+    // Find ALL category cards (including category-slide-card class)
+    const categoryCards = document.querySelectorAll('.card, .category-slide-card');
+
+    categoryCards.forEach(card => {
+        const heading = card.querySelector('h4');
+        if (!heading) return;
+
+        // Get category name (remove city suffix if present)
+        const categoryText = heading.textContent.trim().replace(/\s*—.*$/, '');
+
+        // Map categories to their target pages
+        // Check if we're in a subfolder (services/...)
+        const inSubfolder = window.location.pathname.includes('/services/');
+
+        const redirectMap = {
+            'Weddings': inSubfolder ? '../weddings.html' : 'services/weddings.html',
+            'Corporate Events': inSubfolder ? '../corporate-events.html' : 'services/corporate-events.html',
+            'Celebrations': inSubfolder ? '../celebrations.html' : 'services/celebrations.html',
+            'Entertainment': inSubfolder ? '../entertainment.html' : 'services/entertainment.html',
+            'All Services': inSubfolder ? '../services.html' : 'services.html'  // Fixed: from ../../ to ../
+        };
+
+        const targetPage = redirectMap[categoryText];
+        if (targetPage) {
+            // CRITICAL: Remove existing onclick attribute first
+            card.removeAttribute('onclick');
+
+            // Set new city-aware click handler
+            card.addEventListener('click', function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+
+                // Get selected city
+                const city = typeof cityService !== 'undefined' ? cityService.getSelectedCity() : null;
+
+                // Build URL with city parameter
+                let targetUrl = targetPage;
+                if (city) {
+                    targetUrl += `?city=${encodeURIComponent(city)}`;
+                }
+
+                console.log('Redirecting to:', targetUrl); // Debug log
+                window.location.href = targetUrl;
+            });
+
+            card.style.cursor = 'pointer';
+        }
+    });
+});
+
+
 console.log('✨ DoFor Event - Website Loaded Successfully!');
 

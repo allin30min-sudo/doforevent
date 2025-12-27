@@ -49,7 +49,7 @@
         rel="stylesheet">
 
     <!-- Stylesheet -->
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="assets/css/styles.css">
 
     <!-- Structured Data (Schema.org) -->
     <script type="application/ld+json">
@@ -65,8 +65,8 @@
         "priceRange": "₹₹-₹₹₹₹",
         "address": {
             "@type": "PostalAddress",
-            "streetAddress": "Madanpur Khadar J.J colony",
-            "addressLocality": "Sarita Vihar",
+            "streetAddress": "H no. 2129, 3, near neem kali mandir, JJ Colony, Madanpur Khadar",
+            "addressLocality": "New Delhi",
             "addressRegion": "Delhi",
             "postalCode": "110076",
             "addressCountry": "IN"
@@ -134,6 +134,253 @@
         }
     }
     </script>
+
+    <style>
+        /* Premium Contact Page Styles */
+        .contact-hero {
+            position: relative;
+            min-height: 70vh;
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.95) 0%, rgba(245, 158, 11, 0.95) 50%, rgba(236, 72, 153, 0.95) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .contact-hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="2" fill="white" opacity="0.1"/></svg>');
+            animation: float 20s linear infinite;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0);
+            }
+
+            100% {
+                transform: translateY(-100px);
+            }
+        }
+
+        .quick-contact-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--spacing-lg);
+            margin-top: var(--spacing-2xl);
+            position: relative;
+            z-index: 2;
+        }
+
+        .quick-contact-card {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-xl);
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            color: white;
+        }
+
+        .quick-contact-card:hover {
+            transform: translateY(-10px) scale(1.05);
+            background: rgba(255, 255, 255, 0.25);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .quick-contact-card svg {
+            width: 48px;
+            height: 48px;
+            margin-bottom: var(--spacing-md);
+        }
+
+        .glass-form {
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(20px);
+            border-radius: var(--radius-xl);
+            padding: var(--spacing-2xl);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--spacing-md);
+            margin-bottom: var(--spacing-md);
+        }
+
+        .form-group {
+            position: relative;
+            margin-bottom: var(--spacing-md);
+        }
+
+        .form-input,
+        .form-select,
+        .form-textarea {
+            width: 100%;
+            padding: var(--spacing-md);
+            border: 2px solid var(--color-light-3);
+            border-radius: var(--radius-md);
+            font-size: var(--text-sm);
+            font-family: var(--font-body);
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .form-input:focus,
+        .form-select:focus,
+        .form-textarea:focus {
+            outline: none;
+            border-color: var(--color-primary);
+            box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+            transform: translateY(-1px);
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: var(--spacing-xs);
+            font-weight: 600;
+            color: var(--color-dark-1);
+            font-size: var(--text-xs);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .form-textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .form-input::placeholder,
+        .form-select::placeholder,
+        .form-textarea::placeholder {
+            color: var(--color-dark-4);
+            font-size: var(--text-sm);
+        }
+
+        .contact-info-card {
+            background: white;
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-xl);
+            margin-bottom: var(--spacing-lg);
+            border: 2px solid var(--color-light-2);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            text-decoration: none;
+            display: block;
+        }
+
+        .contact-info-card:hover {
+            border-color: var(--color-primary);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .contact-icon {
+            width: 56px;
+            height: 56px;
+            min-width: 56px;
+            background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+            border-radius: var(--radius-full);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+        }
+
+        .contact-info-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .contact-info-content h4 {
+            margin: 0 0 var(--spacing-xs);
+            font-size: var(--text-lg);
+            color: var(--color-dark-1);
+        }
+
+        .contact-info-content p {
+            margin: 0;
+            color: var(--color-dark-3);
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+
+        .contact-info-content .contact-action {
+            margin: var(--spacing-xs) 0 0;
+            font-size: var(--text-sm);
+            color: var(--color-primary);
+            font-weight: 500;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: var(--spacing-lg);
+            margin-top: var(--spacing-2xl);
+        }
+
+        .stat-card {
+            text-align: center;
+            padding: var(--spacing-xl);
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.1), rgba(245, 158, 11, 0.1));
+            border-radius: var(--radius-lg);
+        }
+
+        .stat-number {
+            font-size: var(--text-4xl);
+            font-weight: 800;
+            color: var(--color-primary);
+            font-family: var(--font-display);
+        }
+
+        .stat-label {
+            font-size: var(--text-sm);
+            color: var(--color-dark-3);
+            margin-top: var(--spacing-sm);
+        }
+
+        .map-container {
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            height: 400px;
+            margin-top: var(--spacing-2xl);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .map-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        @media (max-width: 768px) {
+            .contact-hero {
+                min-height: 60vh;
+            }
+
+            .glass-form {
+                padding: var(--spacing-xl);
+            }
+
+            .quick-contact-cards {
+                grid-template-columns: 1fr;
+            }
+
+            .map-container {
+                height: 300px;
+            }
+        }
+    </style>
 </head>
 
 <body>
@@ -157,186 +404,266 @@
         </div>
     </nav>
 
-    <!-- Page Hero -->
-    <section class="hero" style="min-height: 50vh;">
-        <div class="hero-content">
-            <h1>Get In Touch</h1>
-            <p>Let's discuss your event and make it unforgettable</p>
-        </div>
-    </section>
+    <!-- Premium Hero Section -->
+    <section class="contact-hero">
+        <div class="container" style="position: relative; z-index: 2;">
+            <div class="text-center">
+                <h1 style="color: white; font-size: clamp(2.5rem, 5vw, 4rem); margin-bottom: var(--spacing-md);">Let's
+                    Create Magic Together</h1>
+                <p style="color: rgba(255,255,255,0.95); font-size: var(--text-xl); max-width: 600px; margin: 0 auto;">
+                    Get in touch and let's discuss how we can make your event unforgettable</p>
 
-    <!-- Contact Section -->
-    <section class="section">
-        <div class="container">
-            <div class="grid grid-2" style="gap: var(--spacing-3xl);">
-                <!-- Contact Form -->
-                <div class="scroll-animate">
-                    <h2>Send Us A Message</h2>
-                    <p class="mb-xl">Fill out the form below and we'll get back to you within 24 hours.</p>
+                <!-- Quick Contact Cards -->
+                <div class="quick-contact-cards">
+                    <a href="tel:+919650125822" class="quick-contact-card">
+                        <svg fill="currentColor" viewBox="0 0 24 24">
+                            <path
+                                d="M20.01 15.38c-1.23 0-2.42-.2-3.53-.56-.35-.12-.74-.03-1.01.24l-1.57 1.97c-2.83-1.35-5.48-3.9-6.89-6.83l1.95-1.66c.27-.28.35-.67.24-1.02-.37-1.11-.56-2.3-.56-3.53 0-.54-.45-.99-.99-.99H4.19C3.65 3 3 3.24 3 3.99 3 13.28 10.73 21 20.01 21c.71 0 .99-.63.99-1.18v-3.45c0-.54-.45-.99-.99-.99z" />
+                        </svg>
+                        <h3 style="font-size: var(--text-lg); margin: 0;">Call Us</h3>
+                        <p style="margin: var(--spacing-sm) 0 0; font-size: var(--text-sm);">+91 9650125822</p>
+                    </a>
 
-                    <form id="contactForm">
-                        <div class="form-group">
-                            <label for="name" class="form-label">Full Name *</label>
-                            <input type="text" id="name" name="name" class="form-input" required
-                                placeholder="Your full name">
-                        </div>
+                    <a href="https://wa.me/919650125822" target="_blank" class="quick-contact-card">
+                        <svg fill="currentColor" viewBox="0 0 24 24">
+                            <path
+                                d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+                        </svg>
+                        <h3 style="font-size: var(--text-lg); margin: 0;">WhatsApp</h3>
+                        <p style="margin: var(--spacing-sm) 0 0; font-size: var(--text-sm);">Instant Response</p>
+                    </a>
 
-                        <div class="form-group">
-                            <label for="email" class="form-label">Email Address *</label>
-                            <input type="email" id="email" name="email" class="form-input" required
-                                placeholder="your.email@example.com">
-                        </div>
-
-                        <div class="form-group">
-                            <label for="phone" class="form-label">Phone Number *</label>
-                            <input type="tel" id="phone" name="phone" class="form-input" required
-                                placeholder="10-digit mobile number">
-                        </div>
-
-                        <div class="form-group">
-                            <label for="eventType" class="form-label">Event Type *</label>
-                            <select id="eventType" name="eventType" class="form-select" required>
-                                <option value="">-- Select Event Type --</option>
-                                <option value="corporate">Corporate Event</option>
-                                <option value="wedding">Wedding</option>
-                                <option value="concert">Live Concert</option>
-                                <option value="fashion">Fashion Show</option>
-                                <option value="birthday">Birthday Party</option>
-                                <option value="anniversary">Anniversary</option>
-                                <option value="other">Other</option>
-                            </select>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="eventDate" class="form-label">Tentative Event Date</label>
-                            <input type="date" id="eventDate" name="eventDate" class="form-input">
-                        </div>
-
-                        <div class="form-group">
-                            <label for="guests" class="form-label">Expected Number of Guests</label>
-                            <input type="number" id="guests" name="guests" class="form-input"
-                                placeholder="Approximate count">
-                        </div>
-
-                        <div class="form-group">
-                            <label for="budget" class="form-label">Budget Range</label>
-                            <select id="budget" name="budget" class="form-select">
-                                <option value="">-- Select Budget --</option>
-                                <option value="under-1lakh">Under ₹1 Lakh</option>
-                                <option value="1-3lakh">₹1-3 Lakhs</option>
-                                <option value="3-5lakh">₹3-5 Lakhs</option>
-                                <option value="5-10lakh">₹5-10 Lakhs</option>
-                                <option value="above-10lakh">Above ₹10 Lakhs</option>
-                            </select>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="message" class="form-label">Message / Requirements *</label>
-                            <textarea id="message" name="message" class="form-textarea" required
-                                placeholder="Tell us about your event vision and requirements..."></textarea>
-                        </div>
-
-                        <button type="submit" class="btn btn-primary btn-lg" style="width: 100%;">Send Inquiry</button>
-                    </form>
-                </div>
-
-                <!-- Contact Info -->
-                <div class="scroll-animate">
-                    <h2>Contact Information</h2>
-                    <p class="mb-xl">We're here to help you create an unforgettable event. Reach out through any of
-                        these channels.</p>
-
-                    <div class="card mb-lg">
-                        <div style="display: flex; align-items: flex-start; gap: var(--spacing-lg);">
-                            <div style="font-size: var(--text-3xl);">📍</div>
-                            <div>
-                                <h4 style="color: var(--color-primary); margin-bottom: var(--spacing-sm);">Office
-                                    Address</h4>
-                                <p style="margin: 0;">Madanpur Khadar J.J colony,<br>Sarita Vihar,<br>New Delhi - 110076
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="card mb-lg">
-                        <div style="display: flex; align-items: flex-start; gap: var(--spacing-lg);">
-                            <div style="font-size: var(--text-3xl);">📞</div>
-                            <div>
-                                <h4 style="color: var(--color-primary); margin-bottom: var(--spacing-sm);">Phone</h4>
-                                <p style="margin: 0;"><a href="tel:+919650125822"
-                                        style="color: var(--color-dark); font-weight: 600;">+91 9650125822</a></p>
-                                <p style="margin: 0; font-size: var(--text-sm); color: var(--color-dark-3);">Monday -
-                                    Saturday: 10 AM - 8 PM</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="card mb-lg">
-                        <div style="display: flex; align-items: flex-start; gap: var(--spacing-lg);">
-                            <div style="font-size: var(--text-3xl);">✉️</div>
-                            <div>
-                                <h4 style="color: var(--color-primary); margin-bottom: var(--spacing-sm);">Email</h4>
-                                <p style="margin: 0;"><a href="mailto:Eventsetups.com@gmail.com"
-                                        style="color: var(--color-dark); font-weight: 600;">Eventsetups.com@gmail.com</a>
-                                </p>
-                                <p style="margin: 0; font-size: var(--text-sm); color: var(--color-dark-3);">We respond
-                                    within 24 hours</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="card" style="background: var(--gradient-primary); color: var(--color-white);">
-                        <h4 style="color: var(--color-white); margin-bottom: var(--spacing-md);">Quick WhatsApp Contact
-                        </h4>
-                        <p style="color: rgba(255,255,255,0.9); margin-bottom: var(--spacing-lg);">Get instant response
-                            on WhatsApp</p>
-                        <a href="https://wa.me/919650125822?text=Hi,%20I%20would%20like%20to%20inquire%20about%20event%20planning%20services"
-                            target="_blank" rel="noopener" class="btn btn-whatsapp btn-lg" style="width: 100%;">
-                            <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-                                <path
-                                    d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
-                            </svg>
-                            Chat on WhatsApp
-                        </a>
-                    </div>
-
-                    <div class="mt-xl">
-                        <h4 class="mb-md">Follow Us</h4>
-                        <div class="social-links">
-                            <a href="https://www.facebook.com/doforevent" class="social-link" aria-label="Facebook"
-                                target="_blank" rel="noopener">
-                                <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
-                                    <path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z" />
-                                </svg>
-                            </a>
-                            <a href="https://www.instagram.com/doforevent" class="social-link" aria-label="Instagram"
-                                target="_blank" rel="noopener">
-                                <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
-                                    <path
-                                        d="M7.75 2h8.5A5.75 5.75 0 0122 7.75v8.5A5.75 5.75 0 0116.25 22h-8.5A5.75 5.75 0 012 16.25v-8.5A5.75 5.75 0 017.75 2zm0 1.5A4.25 4.25 0 003.5 7.75v8.5a4.25 4.25 0 004.25 4.25h8.5a4.25 4.25 0 004.25-4.25v-8.5a4.25 4.25 0 00-4.25-4.25h-8.5zM17.5 6.5a1 1 0 110 2 1 1 0 010-2zM12 7.5a4.5 4.5 0 110 9 4.5 4.5 0 010-9zm0 1.5a3 3 0 100 6 3 3 0 000-6z" />
-                                </svg>
-                            </a>
-                            <a href="https://twitter.com/doforevent" class="social-link" aria-label="Twitter"
-                                target="_blank" rel="noopener">
-                                <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
-                                    <path
-                                        d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z" />
-                                </svg>
-                            </a>
-                        </div>
-                    </div>
+                    <a href="mailto:Eventsetups.com@gmail.com" class="quick-contact-card">
+                        <svg fill="currentColor" viewBox="0 0 24 24">
+                            <path
+                                d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" />
+                        </svg>
+                        <h3 style="font-size: var(--text-lg); margin: 0;">Email Us</h3>
+                        <p style="margin: var(--spacing-sm) 0 0; font-size: var(--text-sm);">Quick Reply</p>
+                    </a>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Map Section -->
-    <section class="section" style="background: var(--color-light-2); padding: 0;">
-        <div style="width: 100%; height: 450px; background: var(--color-light-3); position: relative;">
-            <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3505.0822267899565!2d77.28280931508!3d28.535497082454174!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390ce39207f9e4e7%3A0x8d6b4e3a0a6e2e8a!2sMadanpur%20Khadar%2C%20New%20Delhi%2C%20Delhi!5e0!3m2!1sen!2sin!4v1640000000000!5m2!1sen!2sin"
-                width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy">
-            </iframe>
+    <!-- Trust Stats -->
+    <section class="section" style="background: var(--color-light-1);">
+        <div class="container">
+            <div class="stats-grid scroll-animate">
+                <div class="stat-card">
+                    <div class="stat-number">500+</div>
+                    <div class="stat-label">Events Completed</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">450+</div>
+                    <div class="stat-label">Happy Clients</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">10+</div>
+                    <div class="stat-label">Years Experience</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">24/7</div>
+                    <div class="stat-label">Support Available</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Form & Info Section -->
+    <section class="section">
+        <div class="container">
+            <div class="grid grid-2" style="gap: var(--spacing-3xl); align-items: start;">
+                <!-- Contact Form -->
+                <div class="scroll-animate">
+                    <div class="glass-form">
+                        <h2 style="margin-bottom: var(--spacing-xs); font-size: var(--text-2xl);">Send Us A Message</h2>
+                        <p
+                            style="margin-bottom: var(--spacing-xl); color: var(--color-dark-3); font-size: var(--text-sm);">
+                            Fill out the form and
+                            we'll get back to you within 24 hours.</p>
+
+                        <form id="contactForm">
+                            <!-- Row 1: Name & Email -->
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="name" class="form-label">Full Name *</label>
+                                    <input type="text" id="name" name="name" class="form-input" required
+                                        placeholder="John Doe">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="email" class="form-label">Email *</label>
+                                    <input type="email" id="email" name="email" class="form-input" required
+                                        placeholder="john@example.com">
+                                </div>
+                            </div>
+
+                            <!-- Row 2: Phone & Event Type -->
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="phone" class="form-label">Phone *</label>
+                                    <input type="tel" id="phone" name="phone" class="form-input" required
+                                        placeholder="9876543210" pattern="[0-9]{10}">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="eventType" class="form-label">Event Type *</label>
+                                    <select id="eventType" name="eventType" class="form-select" required>
+                                        <option value="">Select Type</option>
+                                        <option value="corporate">Corporate Event</option>
+                                        <option value="wedding">Wedding</option>
+                                        <option value="concert">Live Concert</option>
+                                        <option value="fashion">Fashion Show</option>
+                                        <option value="birthday">Birthday Party</option>
+                                        <option value="anniversary">Anniversary</option>
+                                        <option value="other">Other</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- Row 3: Date & Guests -->
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="eventDate" class="form-label">Event Date</label>
+                                    <input type="date" id="eventDate" name="eventDate" class="form-input">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="guests" class="form-label">Guests</label>
+                                    <input type="number" id="guests" name="guests" class="form-input" placeholder="100"
+                                        min="1">
+                                </div>
+                            </div>
+
+                            <!-- Row 4: Budget -->
+                            <div class="form-group">
+                                <label for="budget" class="form-label">Budget Range</label>
+                                <select id="budget" name="budget" class="form-select">
+                                    <option value="">Select Budget</option>
+                                    <option value="under-1lakh">Under ₹1 Lakh</option>
+                                    <option value="1-3lakh">₹1-3 Lakhs</option>
+                                    <option value="3-5lakh">₹3-5 Lakhs</option>
+                                    <option value="5-10lakh">₹5-10 Lakhs</option>
+                                    <option value="above-10lakh">Above ₹10 Lakhs</option>
+                                </select>
+                            </div>
+
+                            <!-- Message -->
+                            <div class="form-group">
+                                <label for="message" class="form-label">Your Requirements *</label>
+                                <textarea id="message" name="message" class="form-textarea" required
+                                    placeholder="Tell us about your event vision..."></textarea>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary btn-lg" style="width: 100%;">
+                                Send Inquiry →
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Contact Information -->
+                <div class="scroll-animate">
+                    <h2 style="margin-bottom: var(--spacing-xl);">Contact Information</h2>
+                    <p style="margin-bottom: var(--spacing-2xl); color: var(--color-dark-3);">We're here to help you
+                        create an unforgettable event. Reach out through any of these channels.</p>
+
+                    <!-- Phone -->
+                    <a href="tel:+919650125822" class="contact-info-card">
+                        <div style="display: flex; align-items: flex-start; gap: var(--spacing-lg);">
+                            <div class="contact-icon">
+                                <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                                    <path
+                                        d="M20.01 15.38c-1.23 0-2.42-.2-3.53-.56-.35-.12-.74-.03-1.01.24l-1.57 1.97c-2.83-1.35-5.48-3.9-6.89-6.83l1.95-1.66c.27-.28.35-.67.24-1.02-.37-1.11-.56-2.3-.56-3.53 0-.54-.45-.99-.99-.99H4.19C3.65 3 3 3.24 3 3.99 3 13.28 10.73 21 20.01 21c.71 0 .99-.63.99-1.18v-3.45c0-.54-.45-.99-.99-.99z" />
+                                </svg>
+                            </div>
+                            <div class="contact-info-content">
+                                <h4>Phone</h4>
+                                <p>+91 9650125822</p>
+                                <p class="contact-action">Click to call</p>
+                            </div>
+                        </div>
+                    </a>
+
+                    <!-- Email -->
+                    <a href="mailto:Eventsetups.com@gmail.com" class="contact-info-card">
+                        <div style="display: flex; align-items: flex-start; gap: var(--spacing-lg);">
+                            <div class="contact-icon">
+                                <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                                    <path
+                                        d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" />
+                                </svg>
+                            </div>
+                            <div class="contact-info-content">
+                                <h4>Email</h4>
+                                <p>Eventsetups.com@gmail.com</p>
+                                <p class="contact-action">Click to email</p>
+                            </div>
+                        </div>
+                    </a>
+
+                    <!-- Address -->
+                    <div class="contact-info-card">
+                        <div style="display: flex; align-items: flex-start; gap: var(--spacing-lg);">
+                            <div class="contact-icon">
+                                <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                                    <path
+                                        d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
+                                </svg>
+                            </div>
+                            <div class="contact-info-content">
+                                <h4>Office Address</h4>
+                                <p>H no. 2129, 3, near neem kali mandir,<br>JJ Colony, Madanpur Khadar,<br>New Delhi,
+                                    Delhi - 110076</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Office Hours -->
+                    <div class="contact-info-card">
+                        <div style="display: flex; align-items: flex-start; gap: var(--spacing-lg);">
+                            <div class="contact-icon">
+                                <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                                    <path
+                                        d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z" />
+                                </svg>
+                            </div>
+                            <div class="contact-info-content">
+                                <h4>Office Hours</h4>
+                                <p>Monday - Saturday<br>10:00 AM - 8:00 PM</p>
+                                <p class="contact-action" style="color: var(--color-success);">
+                                    <span id="officeStatus">● Open Now</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Google Maps -->
+            <div class="map-container scroll-animate">
+                <iframe
+                    src="https://maps.google.com/maps?q=H+no.+2129,+3,+near+neem+kali+mandir,+JJ+Colony,+Madanpur+Khadar,+New+Delhi,+Delhi+110076&t=&z=15&ie=UTF8&iwloc=&output=embed"
+                    allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="section" style="background: var(--gradient-hero); color: var(--color-white);">
+        <div class="container text-center">
+            <div class="scroll-animate">
+                <h2 style="color: var(--color-white); margin-bottom: var(--spacing-md);">Ready to Start Planning?</h2>
+                <p style="font-size: var(--text-xl); color: rgba(255,255,255,0.9); margin-bottom: var(--spacing-2xl);">
+                    Let's discuss your event and create something extraordinary together</p>
+                <div style="display: flex; gap: var(--spacing-lg); justify-content: center; flex-wrap: wrap;">
+                    <a href="tel:+919650125822" class="btn btn-lg"
+                        style="background: var(--color-white); color: var(--color-primary);">Call Now</a>
+                    <a href="https://wa.me/919650125822" target="_blank" class="btn btn-whatsapp btn-lg">WhatsApp
+                        Us</a>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -346,68 +673,27 @@
             <div class="footer-grid">
                 <div>
                     <h3 class="footer-title">DoFor Event</h3>
-                    <p>DoFor Event is an Event management company based in Delhi that operates across India. We
-                        transform your vision into unforgettable experiences.</p>
-                    <div class="social-links">
-                        <a href="https://www.facebook.com/doforevent" class="social-link" aria-label="Facebook"
-                            target="_blank" rel="noopener">
-                            <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z" />
-                            </svg>
-                        </a>
-                        <a href="https://www.instagram.com/doforevent" class="social-link" aria-label="Instagram"
-                            target="_blank" rel="noopener">
-                            <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
-                                <path
-                                    d="M7.75 2h8.5A5.75 5.75 0 0122 7.75v8.5A5.75 5.75 0 0116.25 22h-8.5A5.75 5.75 0 012 16.25v-8.5A5.75 5.75 0 017.75 2zm0 1.5A4.25 4.25 0 003.5 7.75v8.5a4.25 4.25 0 004.25 4.25h8.5a4.25 4.25 0 004.25-4.25v-8.5a4.25 4.25 0 00-4.25-4.25h-8.5zM17.5 6.5a1 1 0 110 2 1 1 0 010-2zM12 7.5a4.5 4.5 0 110 9 4.5 4.5 0 010-9zm0 1.5a3 3 0 100 6 3 3 0 000-6z" />
-                            </svg>
-                        </a>
-                        <a href="https://twitter.com/doforevent" class="social-link" aria-label="Twitter"
-                            target="_blank" rel="noopener">
-                            <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
-                                <path
-                                    d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z" />
-                            </svg>
-                        </a>
-                    </div>
+                    <p>Event management company based in Delhi operating across India.</p>
                 </div>
-
                 <div>
                     <h3 class="footer-title">Quick Links</h3>
                     <a href="index.html" class="footer-link">Home</a>
                     <a href="services.html" class="footer-link">Services</a>
-                    <a href="about.html" class="footer-link">About Us</a>
-                    <a href="gallery.html" class="footer-link">Events Gallery</a>
-                    <a href="wedding.html" class="footer-link">Wedding Planning</a>
-                    <a href="contact.html" class="footer-link">Contact Us</a>
+                    <a href="contact.html" class="footer-link">Contact</a>
                 </div>
-
                 <div>
-                    <h3 class="footer-title">Services</h3>
-                    <a href="services.html#corporate" class="footer-link">Corporate Events</a>
-                    <a href="wedding.html" class="footer-link">Wedding Planning</a>
-                    <a href="services.html#concerts" class="footer-link">Live Concerts</a>
-                    <a href="services.html#fashion" class="footer-link">Fashion Shows</a>
-                    <a href="services.html#celebrations" class="footer-link">Holiday Celebrations</a>
-                </div>
-
-                <div>
-                    <h3 class="footer-title">Contact Info</h3>
-                    <p><strong>Address:</strong><br>Madanpur Khadar J.J colony,<br>Sarita Vihar, New Delhi - 110076</p>
-                    <p><strong>Phone:</strong><br><a href="tel:+919650125822" class="footer-link">+91 9650125822</a></p>
-                    <p><strong>Email:</strong><br><a href="mailto:Eventsetups.com@gmail.com"
-                            class="footer-link">Eventsetups.com@gmail.com</a></p>
+                    <h3 class="footer-title">Contact</h3>
+                    <p><a href="tel:+919650125822" class="footer-link">+91 9650125822</a></p>
+                    <p><a href="mailto:Eventsetups.com@gmail.com" class="footer-link">Eventsetups.com@gmail.com</a></p>
                 </div>
             </div>
-
             <div class="footer-bottom">
-                <p>Copyright © 2025 DoFor Event. All rights reserved. | Designed with ❤️ for unforgettable experiences
-                </p>
+                <p>Copyright © 2025 DoFor Event. All rights reserved.</p>
             </div>
         </div>
     </footer>
 
-    <!-- WhatsApp Floating Button -->
+    <!-- WhatsApp Float Button -->
     <a href="https://wa.me/919650125822" class="whatsapp-float" target="_blank" rel="noopener"
         aria-label="Chat on WhatsApp">
         <svg width="32" height="32" fill="currentColor" viewBox="0 0 24 24">
@@ -416,8 +702,64 @@
         </svg>
     </a>
 
-    <!-- JavaScript -->
-    <script src="script.js"></script>
+    <!-- Scripts -->
+    <script src="assets/js/city-data.js"></script>
+    <script src="assets/js/city-service.js"></script>
+    <script src="assets/js/service-search.js"></script>
+    <script src="assets/js/city-modal.js"></script>
+    <script src="assets/js/script.js"></script>
+
+    <script>
+        // Form Submission Handler
+        document.getElementById('contactForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            // Get form data
+            const formData = new FormData(this);
+            const data = Object.fromEntries(formData);
+
+            // Create WhatsApp message
+            const message = `*New Event Inquiry*
+
+*Name:* ${data.name}
+*Email:* ${data.email}
+*Phone:* ${data.phone}
+*Event Type:* ${data.eventType}
+*Event Date:* ${data.eventDate || 'Not specified'}
+*Guests:* ${data.guests || 'Not specified'}
+*Budget:* ${data.budget || 'Not specified'}
+
+*Message:*
+${data.message}`;
+
+            // Open WhatsApp
+            const whatsappUrl = `https://wa.me/919650125822?text=${encodeURIComponent(message)}`;
+            window.open(whatsappUrl, '_blank');
+
+            // Show success message
+            alert('Thank you! Redirecting to WhatsApp...');
+            this.reset();
+        });
+
+        // Office Status Checker
+        function updateOfficeStatus() {
+            const now = new Date();
+            const day = now.getDay();
+            const hour = now.getHours();
+
+            const isOpen = day >= 1 && day <= 6 && hour >= 10 && hour < 20;
+            const statusEl = document.getElementById('officeStatus');
+
+            if (isOpen) {
+                statusEl.innerHTML = '● <span style="color: var(--color-success);">Open Now</span>';
+            } else {
+                statusEl.innerHTML = '● <span style="color: var(--color-error);">Closed Now</span>';
+            }
+        }
+
+        updateOfficeStatus();
+        setInterval(updateOfficeStatus, 60000); // Update every minute
+    </script>
 </body>
 
 </html>

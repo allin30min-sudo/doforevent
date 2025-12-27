@@ -12,7 +12,7 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap"
         rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="assets/css/styles.css">
     <style>
         .category-card-compact {
             cursor: pointer;
@@ -67,32 +67,219 @@
     </section>
 
     <!-- City & Service Search Section -->
-    <section class="section" style="background: var(--color-light-2);">
+    <!-- Premium Search Section -->
+    <section class="section"
+        style="background: linear-gradient(135deg, rgba(239, 68, 68, 0.05) 0%, rgba(245, 158, 11, 0.05) 100%);">
         <div class="container">
-            <div class="grid grid-2" style="gap: var(--spacing-xl); max-width: 900px; margin: 0 auto;">
-                <!-- City Search -->
-                <div>
-                    <label style="display: block; margin-bottom: var(--spacing-sm); font-weight: 600;">Search
-                        City</label>
-                    <div style="position: relative;">
-                        <input type="text" id="citySearchInput" placeholder="🔍 Search your city..."
-                            style="width: 100%; padding: var(--spacing-md); border: 2px solid var(--color-light-3); border-radius: var(--radius-md); font-size: var(--text-base);">
+            <div class="text-center mb-2xl scroll-animate">
+                <h2>Find Your Perfect Event Service</h2>
+                <p>Search by city or service to discover tailored event solutions</p>
+            </div>
+
+            <div class="premium-search-container">
+                <!-- City Search Box -->
+                <div class="search-box">
+                    <div class="search-icon">📍</div>
+                    <div class="search-input-wrapper">
+                        <label for="citySearchInput" class="search-label">Search City</label>
+                        <input type="text" id="citySearchInput" class="search-input" placeholder="Search your city..."
+                            autocomplete="off">
                         <div id="citySuggestions" class="search-suggestions"></div>
                     </div>
                 </div>
 
-                <!-- Service Search -->
-                <div>
-                    <label style="display: block; margin-bottom: var(--spacing-sm); font-weight: 600;">Search
-                        Service</label>
-                    <div style="position: relative;">
-                        <input type="text" id="serviceSearchInput" placeholder="🔍 Search service..."
-                            style="width: 100%; padding: var(--spacing-md); border: 2px solid var(--color-light-3); border-radius: var(--radius-md); font-size: var(--text-base);">
+                <div class="search-divider">
+                    <span>OR</span>
+                </div>
+
+                <!-- Service Search Box -->
+                <div class="search-box">
+                    <div class="search-icon">🎯</div>
+                    <div class="search-input-wrapper">
+                        <label for="serviceSearchInput" class="search-label">Search Service</label>
+                        <input type="text" id="serviceSearchInput" class="search-input" placeholder="Search service..."
+                            autocomplete="off">
                         <div id="serviceSuggestions" class="search-suggestions"></div>
                     </div>
                 </div>
             </div>
+
+            <!-- Selected Info Display -->
+            <div id="selectedInfo" class="selected-info" style="display: none;">
+                <div class="selected-badge" id="selectedCityBadge"></div>
+                <div class="selected-badge" id="selectedServiceBadge"></div>
+            </div>
         </div>
+
+        <style>
+            .premium-search-container {
+                max-width: 900px;
+                margin: 0 auto;
+                display: grid;
+                grid-template-columns: 1fr auto 1fr;
+                gap: var(--spacing-xl);
+                align-items: center;
+            }
+
+            .search-box {
+                background: white;
+                border-radius: var(--radius-xl);
+                padding: var(--spacing-xl);
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+                border: 2px solid var(--color-light-2);
+                transition: all 0.3s ease;
+                display: flex;
+                gap: var(--spacing-md);
+                align-items: flex-start;
+            }
+
+            .search-box:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+                border-color: var(--color-primary);
+            }
+
+            .search-box:focus-within {
+                border-color: var(--color-primary);
+                box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.1);
+            }
+
+            .search-icon {
+                font-size: 2rem;
+                flex-shrink: 0;
+            }
+
+            .search-input-wrapper {
+                flex: 1;
+                position: relative;
+            }
+
+            .search-label {
+                display: block;
+                font-size: var(--text-xs);
+                font-weight: 700;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+                color: var(--color-dark-3);
+                margin-bottom: var(--spacing-xs);
+            }
+
+            .search-input {
+                width: 100%;
+                padding: var(--spacing-sm) 0;
+                border: none;
+                border-bottom: 2px solid var(--color-light-3);
+                font-size: var(--text-lg);
+                font-weight: 500;
+                transition: all 0.3s ease;
+                outline: none;
+            }
+
+            .search-input:focus {
+                border-bottom-color: var(--color-primary);
+            }
+
+            .search-input::placeholder {
+                color: var(--color-dark-4);
+                font-weight: 400;
+            }
+
+            .search-divider {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: var(--spacing-sm);
+            }
+
+            .search-divider span {
+                background: white;
+                padding: var(--spacing-sm) var(--spacing-md);
+                border-radius: var(--radius-full);
+                font-weight: 700;
+                color: var(--color-dark-3);
+                font-size: var(--text-sm);
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            }
+
+            .search-suggestions {
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: white;
+                border: 2px solid var(--color-light-3);
+                border-radius: var(--radius-md);
+                margin-top: var(--spacing-sm);
+                max-height: 300px;
+                overflow-y: auto;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+                z-index: 100;
+                display: none;
+            }
+
+            .search-suggestions.active {
+                display: block;
+            }
+
+            .suggestion-item {
+                padding: var(--spacing-md);
+                cursor: pointer;
+                transition: background 0.2s ease;
+                border-bottom: 1px solid var(--color-light-2);
+                display: flex;
+                align-items: center;
+                gap: var(--spacing-sm);
+            }
+
+            .suggestion-item:last-child {
+                border-bottom: none;
+            }
+
+            .suggestion-item:hover {
+                background: var(--color-light-1);
+            }
+
+            .suggestion-item.selected {
+                background: var(--color-primary);
+                color: white;
+            }
+
+            .selected-info {
+                margin-top: var(--spacing-xl);
+                display: flex;
+                justify-content: center;
+                gap: var(--spacing-md);
+                flex-wrap: wrap;
+            }
+
+            .selected-badge {
+                background: white;
+                padding: var(--spacing-sm) var(--spacing-lg);
+                border-radius: var(--radius-full);
+                border: 2px solid var(--color-primary);
+                color: var(--color-primary);
+                font-weight: 600;
+                display: flex;
+                align-items: center;
+                gap: var(--spacing-sm);
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            }
+
+            @media (max-width: 768px) {
+                .premium-search-container {
+                    grid-template-columns: 1fr;
+                    gap: var(--spacing-lg);
+                }
+
+                .search-divider {
+                    display: none;
+                }
+
+                .search-box {
+                    padding: var(--spacing-lg);
+                }
+            }
+        </style>
     </section>
 
     <!-- Popular Cities Section -->
@@ -124,7 +311,7 @@
             <div class="grid grid-4">
                 <!-- Corporate Events Category -->
                 <div class="category-card-compact card scroll-animate"
-                    onclick="window.location.href='corporate-events.html'">
+                    onclick="window.location.href='services/corporate-events.html'">
                     <span class="category-icon-large">🏢</span>
                     <h3>Corporate Events</h3>
                     <p style="margin-bottom: var(--spacing-lg);">Professional corporate event solutions</p>
@@ -132,7 +319,8 @@
                 </div>
 
                 <!-- Weddings Category -->
-                <div class="category-card-compact card scroll-animate" onclick="window.location.href='weddings.html'">
+                <div class="category-card-compact card scroll-animate"
+                    onclick="window.location.href='services/weddings.html'">
                     <span class="category-icon-large">💒</span>
                     <h3>Weddings</h3>
                     <p style="margin-bottom: var(--spacing-lg);">Creating unforgettable wedding experiences</p>
@@ -141,7 +329,7 @@
 
                 <!-- Celebrations Category -->
                 <div class="category-card-compact card scroll-animate"
-                    onclick="window.location.href='celebrations.html'">
+                    onclick="window.location.href='services/celebrations.html'">
                     <span class="category-icon-large">🎉</span>
                     <h3>Celebrations</h3>
                     <p style="margin-bottom: var(--spacing-lg);">Festive celebrations and holiday events</p>
@@ -150,7 +338,7 @@
 
                 <!-- Entertainment Category -->
                 <div class="category-card-compact card scroll-animate"
-                    onclick="window.location.href='entertainment.html'">
+                    onclick="window.location.href='services/entertainment.html'">
                     <span class="category-icon-large">🎭</span>
                     <h3>Entertainment</h3>
                     <p style="margin-bottom: var(--spacing-lg);">Spectacular entertainment experiences</p>
@@ -205,11 +393,11 @@
     </a>
 
     <!-- City System Scripts -->
-    <script src="city-data.js"></script>
-    <script src="city-service.js"></script>
-    <script src="service-search.js"></script>
-    <script src="city-modal.js"></script>
-    <script src="script.js"></script>
+    <script src="assets/js/city-data.js"></script>
+    <script src="assets/js/city-service.js"></script>
+    <script src="assets/js/service-search.js"></script>
+    <script src="assets/js/city-modal.js"></script>
+    <script src="assets/js/script.js"></script>
 
     <!-- Services Page Initialization -->
     <script>
@@ -246,7 +434,7 @@
                         const cityName = item.dataset.city;
                         const emoji = item.dataset.emoji;
                         cityService.setSelectedCity(cityName, emoji);
-                        window.location.href = `city-categories.html?city=${encodeURIComponent(cityName)}`;
+                        window.location.href = `services/city-categories.html?city=${encodeURIComponent(cityName)}`;
                     });
                 });
             });
@@ -255,68 +443,104 @@
             const serviceSearchInput = document.getElementById('serviceSearchInput');
             const serviceSuggestions = document.getElementById('serviceSuggestions');
 
-            serviceSearchInput.addEventListener('input', (e) => {
-                const query = e.target.value;
-                if (query.length < 2) {
-                    serviceSuggestions.innerHTML = '';
-                    serviceSuggestions.style.display = 'none';
-                    return;
-                }
+            if (serviceSearchInput && serviceSuggestions) {
+                serviceSearchInput.addEventListener('input', (e) => {
+                    const query = e.target.value;
 
-                const results = searchServices(query);
-                if (results.length === 0) {
-                    serviceSuggestions.style.display = 'none';
-                    return;
-                }
+                    // Check if city is selected when searching for service
+                    if (query.length >= 1 && !cityService.hasSelectedCity()) {
+                        // Show alert and open city modal
+                        serviceSuggestions.innerHTML = `
+                            <div class="suggestion-item" style="background: rgba(239, 68, 68, 0.1); cursor: default; flex-direction: column; align-items: flex-start;">
+                                <strong style="color: var(--color-primary);">⚠️ City Selection Required</strong>
+                                <p style="margin: var(--spacing-xs) 0 0; font-size: var(--text-sm);">Please select your city first to search for services.</p>
+                                <button class="btn btn-primary btn-sm" onclick="openCityModal()" style="margin-top: var(--spacing-sm);">
+                                    Select City
+                                </button>
+                            </div>
+                        `;
+                        serviceSuggestions.classList.add('active');
+                        return;
+                    }
 
-                const selectedCity = cityService.getSelectedCity();
-                serviceSuggestions.innerHTML = results.map(service => `
-                    <div class="suggestion-item" data-url="${service.url}">
-                        <span style="font-weight: 600;">${service.name}</span>
-                        <span style="font-size: 0.875rem; color: var(--color-dark-3); margin-left: 10px;">${service.category}</span>
-                    </div>
-                `).join('');
-                serviceSuggestions.style.display = 'block';
+                    if (query.length < 2) {
+                        serviceSuggestions.innerHTML = '';
+                        serviceSuggestions.classList.remove('active');
+                        return;
+                    }
 
-                // Add click handlers
-                serviceSuggestions.querySelectorAll('.suggestion-item').forEach(item => {
-                    item.addEventListener('click', () => {
-                        const url = getServiceURL(item.dataset.url, selectedCity);
-                        window.location.href = url;
+                    const results = searchServices(query);
+                    if (results.length === 0) {
+                        serviceSuggestions.classList.remove('active');
+                        return;
+                    }
+
+                    const selectedCity = cityService.getSelectedCity();
+                    serviceSuggestions.innerHTML = results.map(service => `
+                        <div class="suggestion-item" data-url="${service.url}">
+                            <strong>${service.name}</strong>
+                            <span style="color: var(--color-dark-3); font-size: var(--text-sm);">${service.category}</span>
+                        </div>
+                    `).join('');
+                    serviceSuggestions.classList.add('active');
+
+                    // Add click handlers
+                    serviceSuggestions.querySelectorAll('.suggestion-item').forEach(item => {
+                        item.addEventListener('click', () => {
+                            // Check if city is selected before navigation
+                            if (!cityService.hasSelectedCity()) {
+                                // Open city modal
+                                openCityModal();
+
+                                // Store the service URL to navigate after city selection
+                                const url = item.dataset.url;
+                                sessionStorage.setItem('pendingServiceUrl', url);
+
+                                return;
+                            }
+
+                            const url = item.dataset.url;
+                            const city = cityService.getSelectedCity();
+                            window.location.href = getServiceURL(url, city);
+                        });
                     });
                 });
-            });
+            }
+
+
 
             // Load popular cities
             const popularCitiesGrid = document.getElementById('popularCitiesGrid');
-            const popularCities = getPopularCities();
+            if (popularCitiesGrid) {
+                const popularCities = getPopularCities();
 
-            popularCitiesGrid.innerHTML = popularCities.map(city => `
-                <div class="card text-center" style="cursor: pointer; transition: all 0.3s ease;" data-city="${city.name}" data-emoji="${city.emoji}">
-                    <div style="font-size: 3rem; margin-bottom: var(--spacing-sm);">${city.emoji}</div>
-                    <h4 style="margin: 0;">${city.name}</h4>
-                </div>
-            `).join('');
+                popularCitiesGrid.innerHTML = popularCities.map(city => `
+                    <div class="card text-center" style="cursor: pointer; transition: all 0.3s ease;" data-city="${city.name}" data-emoji="${city.emoji}">
+                        <div style="font-size: 3rem; margin-bottom: var(--spacing-sm);">${city.emoji}</div>
+                        <h4 style="margin: 0;">${city.name}</h4>
+                    </div>
+                `).join('');
 
-            // Add click handlers to city cards
-            popularCitiesGrid.querySelectorAll('.card').forEach(card => {
-                card.addEventListener('click', () => {
-                    const cityName = card.dataset.city;
-                    const emoji = card.dataset.emoji;
-                    cityService.setSelectedCity(cityName, emoji);
-                    window.location.href = `city-categories.html?city=${encodeURIComponent(cityName)}`;
+                // Add click handlers to city cards
+                popularCitiesGrid.querySelectorAll('.card').forEach(card => {
+                    card.addEventListener('click', () => {
+                        const cityName = card.dataset.city;
+                        const emoji = card.dataset.emoji;
+                        cityService.setSelectedCity(cityName, emoji);
+                        window.location.href = `services/city-categories.html?city=${encodeURIComponent(cityName)}`;
+                    });
+
+                    card.addEventListener('mouseenter', () => {
+                        card.style.transform = 'translateY(-5px)';
+                        card.style.boxShadow = '0 10px 30px rgba(0, 0, 0, 0.15)';
+                    });
+
+                    card.addEventListener('mouseleave', () => {
+                        card.style.transform = 'translateY(0)';
+                        card.style.boxShadow = '';
+                    });
                 });
-
-                card.addEventListener('mouseenter', () => {
-                    card.style.transform = 'translateY(-5px)';
-                    card.style.boxShadow = '0 10px 30px rgba(0, 0, 0, 0.15)';
-                });
-
-                card.addEventListener('mouseleave', () => {
-                    card.style.transform = 'translateY(0)';
-                    card.style.boxShadow = '';
-                });
-            });
+            }
 
             // Explore More Cities button
             const exploreMoreBtn = document.getElementById('exploreMoreCitiesBtn');
@@ -341,7 +565,7 @@
                             const cityName = card.dataset.city;
                             const emoji = card.dataset.emoji;
                             cityService.setSelectedCity(cityName, emoji);
-                            window.location.href = `city-categories.html?city=${encodeURIComponent(cityName)}`;
+                            window.location.href = `services/city-categories.html?city=${encodeURIComponent(cityName)}`;
                         });
 
                         card.addEventListener('mouseenter', () => {

@@ -1,13 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Our Services - Event Management Services | DoFor Event</title>
-    <meta name="description" content="Comprehensive event management services including corporate events, weddings, live concerts, fashion shows, and celebrations. Professional planning across India.">
+    <meta name="description"
+        content="Comprehensive event management services including corporate events, weddings, live concerts, fashion shows, and celebrations. Professional planning across India.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
     <style>
         .category-card-compact {
@@ -17,24 +21,25 @@
             perspective: 1000px;
             text-align: center;
         }
-        
+
         .category-card-compact:hover {
             transform: translateY(-10px) rotateX(5deg);
             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.3);
         }
-        
+
         .category-icon-large {
             font-size: 4rem;
             margin-bottom: var(--spacing-md);
             display: block;
             transition: transform 0.3s ease;
         }
-        
+
         .category-card-compact:hover .category-icon-large {
             transform: scale(1.15) rotateY(10deg);
         }
     </style>
 </head>
+
 <body>
     <nav class="navbar">
         <div class="container">
@@ -55,8 +60,56 @@
 
     <section class="hero" style="min-height: 60vh;">
         <div class="hero-content">
-            <h1>Our Services</h1>
-            <p>Comprehensive event management solutions across all categories</p>
+            <h1>Explore Our Services in Your City or Preferred Location</h1>
+            <p>Discover personalized event management services tailored to <span class="city-name"
+                    style="font-weight: 700; color: var(--color-secondary);">your city</span></p>
+        </div>
+    </section>
+
+    <!-- City & Service Search Section -->
+    <section class="section" style="background: var(--color-light-2);">
+        <div class="container">
+            <div class="grid grid-2" style="gap: var(--spacing-xl); max-width: 900px; margin: 0 auto;">
+                <!-- City Search -->
+                <div>
+                    <label style="display: block; margin-bottom: var(--spacing-sm); font-weight: 600;">Search
+                        City</label>
+                    <div style="position: relative;">
+                        <input type="text" id="citySearchInput" placeholder="🔍 Search your city..."
+                            style="width: 100%; padding: var(--spacing-md); border: 2px solid var(--color-light-3); border-radius: var(--radius-md); font-size: var(--text-base);">
+                        <div id="citySuggestions" class="search-suggestions"></div>
+                    </div>
+                </div>
+
+                <!-- Service Search -->
+                <div>
+                    <label style="display: block; margin-bottom: var(--spacing-sm); font-weight: 600;">Search
+                        Service</label>
+                    <div style="position: relative;">
+                        <input type="text" id="serviceSearchInput" placeholder="🔍 Search service..."
+                            style="width: 100%; padding: var(--spacing-md); border: 2px solid var(--color-light-3); border-radius: var(--radius-md); font-size: var(--text-base);">
+                        <div id="serviceSuggestions" class="search-suggestions"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Popular Cities Section -->
+    <section class="section">
+        <div class="container">
+            <div class="text-center mb-2xl scroll-animate">
+                <h2>Select Your City</h2>
+                <p>Choose from popular cities or search above</p>
+            </div>
+
+            <div id="popularCitiesGrid" class="grid grid-4" style="margin-bottom: var(--spacing-xl);"></div>
+
+            <div class="text-center">
+                <button id="exploreMoreCitiesBtn" class="btn btn-outline btn-lg">Explore More Cities</button>
+            </div>
+
+            <div id="moreCitiesGrid" class="grid grid-4" style="margin-top: var(--spacing-xl); display: none;"></div>
         </div>
     </section>
 
@@ -67,10 +120,11 @@
                 <h2>Explore Our Service Categories</h2>
                 <p>Click on any category to explore all available services</p>
             </div>
-            
+
             <div class="grid grid-4">
                 <!-- Corporate Events Category -->
-                <div class="category-card-compact card scroll-animate" onclick="window.location.href='corporate-events.html'">
+                <div class="category-card-compact card scroll-animate"
+                    onclick="window.location.href='corporate-events.html'">
                     <span class="category-icon-large">🏢</span>
                     <h3>Corporate Events</h3>
                     <p style="margin-bottom: var(--spacing-lg);">Professional corporate event solutions</p>
@@ -86,7 +140,8 @@
                 </div>
 
                 <!-- Celebrations Category -->
-                <div class="category-card-compact card scroll-animate" onclick="window.location.href='celebrations.html'">
+                <div class="category-card-compact card scroll-animate"
+                    onclick="window.location.href='celebrations.html'">
                     <span class="category-icon-large">🎉</span>
                     <h3>Celebrations</h3>
                     <p style="margin-bottom: var(--spacing-lg);">Festive celebrations and holiday events</p>
@@ -94,7 +149,8 @@
                 </div>
 
                 <!-- Entertainment Category -->
-                <div class="category-card-compact card scroll-animate" onclick="window.location.href='entertainment.html'">
+                <div class="category-card-compact card scroll-animate"
+                    onclick="window.location.href='entertainment.html'">
                     <span class="category-icon-large">🎭</span>
                     <h3>Entertainment</h3>
                     <p style="margin-bottom: var(--spacing-lg);">Spectacular entertainment experiences</p>
@@ -109,8 +165,10 @@
         <div class="container text-center">
             <div class="scroll-animate">
                 <h2 style="color: var(--color-white);">Ready to Plan Your Event?</h2>
-                <p style="font-size: var(--text-xl); color: rgba(255,255,255,0.9); margin-bottom: var(--spacing-2xl);">Contact us for a free consultation</p>
-                <a href="contact.html" class="btn btn-lg" style="background: var(--color-white); color: var(--color-primary);">Get Started</a>
+                <p style="font-size: var(--text-xl); color: rgba(255,255,255,0.9); margin-bottom: var(--spacing-2xl);">
+                    Contact us for a free consultation</p>
+                <a href="contact.html" class="btn btn-lg"
+                    style="background: var(--color-white); color: var(--color-primary);">Get Started</a>
             </div>
         </div>
     </section>
@@ -118,18 +176,226 @@
     <footer class="footer">
         <div class="container">
             <div class="footer-grid">
-                <div><h3 class="footer-title">DoFor Event</h3><p>Event management company based in Delhi operating across India.</p></div>
-                <div><h3 class="footer-title">Quick Links</h3><a href="index.html" class="footer-link">Home</a><a href="services.html" class="footer-link">Services</a><a href="contact.html" class="footer-link">Contact</a></div>
-                <div><h3 class="footer-title">Contact</h3><p><a href="tel:+919650125822" class="footer-link">+91 9650125822</a></p></div>
+                <div>
+                    <h3 class="footer-title">DoFor Event</h3>
+                    <p>Event management company based in Delhi operating across India.</p>
+                </div>
+                <div>
+                    <h3 class="footer-title">Quick Links</h3><a href="index.html" class="footer-link">Home</a><a
+                        href="services.html" class="footer-link">Services</a><a href="contact.html"
+                        class="footer-link">Contact</a>
+                </div>
+                <div>
+                    <h3 class="footer-title">Contact</h3>
+                    <p><a href="tel:+919650125822" class="footer-link">+91 9650125822</a></p>
+                </div>
             </div>
-            <div class="footer-bottom"><p>Copyright © 2025 DoFor Event. All rights reserved.</p></div>
+            <div class="footer-bottom">
+                <p>Copyright © 2025 DoFor Event. All rights reserved.</p>
+            </div>
         </div>
     </footer>
 
-    <a href="https://wa.me/919650125822" class="whatsapp-float" target="_blank" rel="noopener" aria-label="Chat on WhatsApp">
-        <svg width="32" height="32" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+    <a href="https://wa.me/919650125822" class="whatsapp-float" target="_blank" rel="noopener"
+        aria-label="Chat on WhatsApp">
+        <svg width="32" height="32" fill="currentColor" viewBox="0 0 24 24">
+            <path
+                d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+        </svg>
     </a>
 
+    <!-- City System Scripts -->
+    <script src="city-data.js"></script>
+    <script src="city-service.js"></script>
+    <script src="service-search.js"></script>
+    <script src="city-modal.js"></script>
     <script src="script.js"></script>
+
+    <!-- Services Page Initialization -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Initialize city search
+            const citySearchInput = document.getElementById('citySearchInput');
+            const citySuggestions = document.getElementById('citySuggestions');
+
+            citySearchInput.addEventListener('input', (e) => {
+                const query = e.target.value;
+                if (query.length < 2) {
+                    citySuggestions.innerHTML = '';
+                    citySuggestions.style.display = 'none';
+                    return;
+                }
+
+                const results = searchCities(query);
+                if (results.length === 0) {
+                    citySuggestions.style.display = 'none';
+                    return;
+                }
+
+                citySuggestions.innerHTML = results.map(city => `
+                    <div class="suggestion-item" data-city="${city.name}" data-emoji="${city.emoji}">
+                        <span style="font-size: 1.5rem; margin-right: 10px;">${city.emoji}</span>
+                        <span>${city.name}</span>
+                    </div>
+                `).join('');
+                citySuggestions.style.display = 'block';
+
+                // Add click handlers
+                citySuggestions.querySelectorAll('.suggestion-item').forEach(item => {
+                    item.addEventListener('click', () => {
+                        const cityName = item.dataset.city;
+                        const emoji = item.dataset.emoji;
+                        cityService.setSelectedCity(cityName, emoji);
+                        window.location.href = `city-categories.html?city=${encodeURIComponent(cityName)}`;
+                    });
+                });
+            });
+
+            // Initialize service search
+            const serviceSearchInput = document.getElementById('serviceSearchInput');
+            const serviceSuggestions = document.getElementById('serviceSuggestions');
+
+            serviceSearchInput.addEventListener('input', (e) => {
+                const query = e.target.value;
+                if (query.length < 2) {
+                    serviceSuggestions.innerHTML = '';
+                    serviceSuggestions.style.display = 'none';
+                    return;
+                }
+
+                const results = searchServices(query);
+                if (results.length === 0) {
+                    serviceSuggestions.style.display = 'none';
+                    return;
+                }
+
+                const selectedCity = cityService.getSelectedCity();
+                serviceSuggestions.innerHTML = results.map(service => `
+                    <div class="suggestion-item" data-url="${service.url}">
+                        <span style="font-weight: 600;">${service.name}</span>
+                        <span style="font-size: 0.875rem; color: var(--color-dark-3); margin-left: 10px;">${service.category}</span>
+                    </div>
+                `).join('');
+                serviceSuggestions.style.display = 'block';
+
+                // Add click handlers
+                serviceSuggestions.querySelectorAll('.suggestion-item').forEach(item => {
+                    item.addEventListener('click', () => {
+                        const url = getServiceURL(item.dataset.url, selectedCity);
+                        window.location.href = url;
+                    });
+                });
+            });
+
+            // Load popular cities
+            const popularCitiesGrid = document.getElementById('popularCitiesGrid');
+            const popularCities = getPopularCities();
+
+            popularCitiesGrid.innerHTML = popularCities.map(city => `
+                <div class="card text-center" style="cursor: pointer; transition: all 0.3s ease;" data-city="${city.name}" data-emoji="${city.emoji}">
+                    <div style="font-size: 3rem; margin-bottom: var(--spacing-sm);">${city.emoji}</div>
+                    <h4 style="margin: 0;">${city.name}</h4>
+                </div>
+            `).join('');
+
+            // Add click handlers to city cards
+            popularCitiesGrid.querySelectorAll('.card').forEach(card => {
+                card.addEventListener('click', () => {
+                    const cityName = card.dataset.city;
+                    const emoji = card.dataset.emoji;
+                    cityService.setSelectedCity(cityName, emoji);
+                    window.location.href = `city-categories.html?city=${encodeURIComponent(cityName)}`;
+                });
+
+                card.addEventListener('mouseenter', () => {
+                    card.style.transform = 'translateY(-5px)';
+                    card.style.boxShadow = '0 10px 30px rgba(0, 0, 0, 0.15)';
+                });
+
+                card.addEventListener('mouseleave', () => {
+                    card.style.transform = 'translateY(0)';
+                    card.style.boxShadow = '';
+                });
+            });
+
+            // Explore More Cities button
+            const exploreMoreBtn = document.getElementById('exploreMoreCitiesBtn');
+            const moreCitiesGrid = document.getElementById('moreCitiesGrid');
+            let moreCitiesLoaded = false;
+
+            exploreMoreBtn.addEventListener('click', () => {
+                if (!moreCitiesLoaded) {
+                    const allCities = getAllCities();
+                    const additionalCities = allCities.filter(city => !city.popular);
+
+                    moreCitiesGrid.innerHTML = additionalCities.map(city => `
+                        <div class="card text-center" style="cursor: pointer; transition: all 0.3s ease;" data-city="${city.name}" data-emoji="${city.emoji}">
+                            <div style="font-size: 3rem; margin-bottom: var(--spacing-sm);">${city.emoji}</div>
+                            <h4 style="margin: 0; font-size: var(--text-base);">${city.name}</h4>
+                        </div>
+                    `).join('');
+
+                    // Add click handlers
+                    moreCitiesGrid.querySelectorAll('.card').forEach(card => {
+                        card.addEventListener('click', () => {
+                            const cityName = card.dataset.city;
+                            const emoji = card.dataset.emoji;
+                            cityService.setSelectedCity(cityName, emoji);
+                            window.location.href = `city-categories.html?city=${encodeURIComponent(cityName)}`;
+                        });
+
+                        card.addEventListener('mouseenter', () => {
+                            card.style.transform = 'translateY(-5px)';
+                            card.style.boxShadow = '0 10px 30px rgba(0, 0, 0, 0.15)';
+                        });
+
+                        card.addEventListener('mouseleave', () => {
+                            card.style.transform = 'translateY(0)';
+                            card.style.boxShadow = '';
+                        });
+                    });
+
+                    moreCitiesLoaded = true;
+                }
+
+                moreCitiesGrid.style.display = moreCitiesGrid.style.display === 'none' ? 'grid' : 'none';
+                exploreMoreBtn.textContent = moreCitiesGrid.style.display === 'none' ? 'Explore More Cities' : 'Show Less';
+            });
+
+            // Add styles for suggestions
+            const style = document.createElement('style');
+            style.textContent = `
+                .search-suggestions {
+                    position: absolute;
+                    top: 100%;
+                    left: 0;
+                    right: 0;
+                    background: white;
+                    border: 1px solid var(--color-light-3);
+                    border-radius: var(--radius-md);
+                    margin-top: 5px;
+                    max-height: 300px;
+                    overflow-y: auto;
+                    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+                    z-index: 100;
+                    display: none;
+                }
+
+                .suggestion-item {
+                    padding: var(--spacing-md);
+                    cursor: pointer;
+                    transition: background 0.2s ease;
+                    display: flex;
+                    align-items: center;
+                }
+
+                .suggestion-item:hover {
+                    background: var(--color-light-2);
+                }
+            `;
+            document.head.appendChild(style);
+        });
+    </script>
 </body>
+
 </html>

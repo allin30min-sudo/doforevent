@@ -195,7 +195,43 @@
         </svg>
     </a>
 
+    <!-- City System Scripts -->
+    <script src="city-data.js"></script>
+    <script src="city-service.js"></script>
+    <script src="service-search.js"></script>
+    <script src="city-modal.js"></script>
     <script src="script.js"></script>
+
+    <!-- City Name Injection -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const city = cityService.getSelectedCity();
+            if (city) {
+                // Update page title (h1)
+                const pageTitle = document.querySelector('h1');
+                if (pageTitle && !pageTitle.textContent.includes('—')) {
+                    const originalText = pageTitle.textContent.trim();
+                    pageTitle.textContent = `${originalText} — ${city}`;
+                }
+
+                // Update section titles (h2)
+                document.querySelectorAll('h2').forEach(heading => {
+                    const originalText = heading.textContent.trim();
+                    if (!originalText.includes('—') && !originalText.includes('?')) {
+                        heading.textContent = `${originalText} — ${city}`;
+                    }
+                });
+
+                // Update service card headings (h3 in cards)
+                document.querySelectorAll('.card h3, .service-card h3, .card h4, .service-card h4').forEach(heading => {
+                    const originalText = heading.textContent.trim();
+                    if (!originalText.includes('—')) {
+                        heading.textContent = `${originalText} — ${city}`;
+                    }
+                });
+            }
+        });
+    </script>
 </body>
 
 </html>

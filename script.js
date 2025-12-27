@@ -330,4 +330,25 @@ const initGallery = () => {
 
 initGallery();
 
+// ========== City Initialization (City-Based Service Discovery) ==========
+document.addEventListener('DOMContentLoaded', () => {
+    // Initialize city from URL or localStorage
+    if (typeof cityService !== 'undefined') {
+        const city = cityService.initializeCity();
+
+        // Inject city into page elements
+        cityService.injectCityIntoPage();
+
+        // Update page title if city is selected
+        if (city) {
+            const titleElement = document.querySelector('h1[data-city-title]');
+            if (titleElement) {
+                const template = titleElement.getAttribute('data-city-title');
+                titleElement.textContent = template.replace('{city}', city);
+            }
+        }
+    }
+});
+
 console.log('✨ DoFor Event - Website Loaded Successfully!');
+

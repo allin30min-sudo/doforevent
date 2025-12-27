@@ -144,7 +144,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            overflow: hidden;
+            /* overflow: hidden; removed to prevent clipping on mobile */
         }
 
         .contact-hero::before {
@@ -365,8 +365,10 @@
 
         @media (max-width: 768px) {
             .contact-hero {
-                min-height: 50vh;
-                padding: var(--spacing-4xl) 0;
+                min-height: auto;
+                /* Allow content to dictate height */
+                padding: 140px 0 var(--spacing-4xl);
+                align-items: flex-start;
             }
 
             .contact-hero h1 {
@@ -400,6 +402,10 @@
         }
 
         @media (max-width: 480px) {
+            .contact-hero {
+                padding: 120px 0 var(--spacing-3xl);
+            }
+
             .contact-hero h1 {
                 font-size: 2rem !important;
             }

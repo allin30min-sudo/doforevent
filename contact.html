@@ -139,12 +139,15 @@
         /* Premium Contact Page Styles */
         .contact-hero {
             position: relative;
-            min-height: 70vh;
-            background: linear-gradient(135deg, rgba(239, 68, 68, 0.95) 0%, rgba(245, 158, 11, 0.95) 50%, rgba(236, 72, 153, 0.95) 100%);
+            min-height: 80vh;
+            background: linear-gradient(rgba(141, 168, 233, 0.85), rgba(30, 27, 75, 0.85)), url('assets/img/hero-corporate.jpg');
+            background-size: cover;
+            background-position: center;
             display: flex;
             align-items: center;
             justify-content: center;
-            /* overflow: hidden; removed to prevent clipping on mobile */
+            padding-top: 120px;
+            /* Added padding-top to clear navbar comfortably */
         }
 
         .contact-hero::before {
@@ -172,7 +175,8 @@
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: var(--spacing-lg);
-            margin-top: var(--spacing-2xl);
+            margin-top: var(--spacing-lg);
+            /* Reduced margin to bring cards higher */
             position: relative;
             z-index: 2;
         }
@@ -195,10 +199,16 @@
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
         }
 
+        .quick-contact-card h3,
+        .quick-contact-card p {
+            color: white !important;
+        }
+
         .quick-contact-card svg {
             width: 48px;
             height: 48px;
             margin-bottom: var(--spacing-md);
+            color: white;
         }
 
         .glass-form {
@@ -332,7 +342,7 @@
         .stat-card {
             text-align: center;
             padding: var(--spacing-xl);
-            background: linear-gradient(135deg, rgba(239, 68, 68, 0.1), rgba(245, 158, 11, 0.1));
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(168, 85, 247, 0.1));
             border-radius: var(--radius-lg);
         }
 
@@ -459,7 +469,7 @@
                 <a href="about.html" class="navbar-link">About</a>
                 <a href="gallery.html" class="navbar-link">Gallery</a>
                 <a href="contact.html" class="navbar-link active">Contact</a>
-                <a href="contact.html" class="btn btn-primary">Get Quote</a>
+                <a href="contact.html" class="btn btn-premium">Get Quote</a>
             </div>
             <button class="navbar-toggle" id="navbarToggle">
                 <span></span>
@@ -473,7 +483,9 @@
     <section class="contact-hero">
         <div class="container" style="position: relative; z-index: 2;">
             <div class="text-center">
-                <h1 style="color: white; font-size: clamp(2.5rem, 5vw, 4rem); margin-bottom: var(--spacing-md);">Let's
+                <h1
+                    style="color: white !important; -webkit-text-fill-color: white !important; background: none !important; font-size: clamp(2.5rem, 5vw, 4rem); margin-bottom: var(--spacing-md); text-shadow: 0 4px 20px rgba(0,0,0,0.6);">
+                    Let's
                     Create Magic Together</h1>
                 <p style="color: rgba(255,255,255,0.95); font-size: var(--text-xl); max-width: 600px; margin: 0 auto;">
                     Get in touch and let's discuss how we can make your event unforgettable</p>

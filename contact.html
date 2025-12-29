@@ -544,29 +544,214 @@
         </div>
     </section>
 
-    <!-- Trust Stats -->
-    <section class="section" style="background: var(--color-light-1);">
+    <!-- Trust Stats Section -->
+    <section class="premium-stats-luxury">
         <div class="container">
-            <div class="stats-grid scroll-animate">
-                <div class="stat-card">
-                    <div class="stat-number">500+</div>
-                    <div class="stat-label">Events Completed</div>
+            <div class="stats-luxury-grid">
+                <!-- Event Completed -->
+                <div class="luxury-stat-card scroll-animate">
+                    <div class="lux-stat-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                            <polyline points="22 4 12 14.01 9 11.01" />
+                        </svg>
+                    </div>
+                    <div class="lux-stat-info">
+                        <h4 class="lux-stat-number" data-count="500">500+</h4>
+                        <p class="lux-stat-label">Grand Events</p>
+                    </div>
                 </div>
-                <div class="stat-card">
-                    <div class="stat-number">450+</div>
-                    <div class="stat-label">Happy Clients</div>
+
+                <!-- Happy Clients -->
+                <div class="luxury-stat-card scroll-animate" style="transition-delay: 0.1s;">
+                    <div class="lux-stat-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path
+                                d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+                        </svg>
+                    </div>
+                    <div class="lux-stat-info">
+                        <h4 class="lux-stat-number" data-count="450">450+</h4>
+                        <p class="lux-stat-label">Elite Clients</p>
+                    </div>
                 </div>
-                <div class="stat-card">
-                    <div class="stat-number">10+</div>
-                    <div class="stat-label">Years Experience</div>
+
+                <!-- Years Experience -->
+                <div class="luxury-stat-card scroll-animate" style="transition-delay: 0.2s;">
+                    <div class="lux-stat-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10" />
+                            <polyline points="12 6 12 12 16 14" />
+                        </svg>
+                    </div>
+                    <div class="lux-stat-info">
+                        <h4 class="lux-stat-number" data-count="15">15+</h4>
+                        <p class="lux-stat-label">Years of Mastery</p>
+                    </div>
                 </div>
-                <div class="stat-card">
-                    <div class="stat-number">24/7</div>
-                    <div class="stat-label">Support Available</div>
+
+                <!-- Support -->
+                <div class="luxury-stat-card scroll-animate" style="transition-delay: 0.3s;">
+                    <div class="lux-stat-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+                        </svg>
+                    </div>
+                    <div class="lux-stat-info">
+                        <h4 class="lux-stat-number">24/7</h4>
+                        <p class="lux-stat-label">VIP Concierge</p>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
+
+    <style>
+        .premium-stats-luxury {
+            padding: var(--spacing-4xl) 0;
+            background: #0f172a;
+            /* Deep luxury navy */
+            position: relative;
+            overflow: hidden;
+        }
+
+        .premium-stats-luxury::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 20% 30%, rgba(99, 102, 241, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(236, 72, 153, 0.15) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .stats-luxury-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 2.5rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .luxury-stat-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            padding: 3rem 2rem;
+            border-radius: var(--radius-2xl);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+        }
+
+        .luxury-stat-card::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            padding: 1px;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), transparent, rgba(255, 255, 255, 0.1));
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+        }
+
+        .luxury-stat-card:hover {
+            transform: translateY(-20px) scale(1.02);
+            background: rgba(255, 255, 255, 0.07);
+            border-color: var(--color-accent);
+            box-shadow: 0 40px 80px -20px rgba(0, 0, 0, 0.5);
+        }
+
+        .lux-stat-icon {
+            width: 80px;
+            height: 80px;
+            background: rgba(255, 255, 255, 0.05);
+            color: white;
+            border-radius: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 2rem;
+            transition: all 0.5s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .lux-stat-icon svg {
+            width: 36px;
+            height: 36px;
+        }
+
+        .luxury-stat-card:hover .lux-stat-icon {
+            background: var(--color-accent);
+            color: #0f172a;
+            transform: rotateY(180deg) scale(1.1);
+            box-shadow: 0 0 30px rgba(245, 158, 11, 0.4);
+        }
+
+        .lux-stat-number {
+            font-size: 3.5rem;
+            font-weight: 900;
+            margin: 0;
+            background: linear-gradient(to bottom, #fff, #cbd5e1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1;
+            letter-spacing: -2px;
+        }
+
+        .luxury-stat-card:hover .lux-stat-number {
+            background: linear-gradient(to bottom, #fff, var(--color-accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .lux-stat-label {
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.6);
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            font-weight: 700;
+            margin-top: 0.75rem;
+            transition: all 0.3s ease;
+        }
+
+        .luxury-stat-card:hover .lux-stat-label {
+            color: white;
+            letter-spacing: 4px;
+        }
+
+        @media (max-width: 768px) {
+            .stats-luxury-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1rem;
+            }
+
+            .luxury-stat-card {
+                padding: 1.5rem 1rem;
+            }
+
+            .lux-stat-number {
+                font-size: 2rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .stats-luxury-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 
     <!-- Contact Form & Info Section -->
     <section class="section">
@@ -748,22 +933,256 @@
         </div>
     </section>
 
-    <!-- CTA Section -->
-    <section class="section" style="background: var(--gradient-hero); color: var(--color-white);">
-        <div class="container text-center">
-            <div class="scroll-animate">
-                <h2 style="color: var(--color-white); margin-bottom: var(--spacing-md);">Ready to Start Planning?</h2>
-                <p style="font-size: var(--text-xl); color: rgba(255,255,255,0.9); margin-bottom: var(--spacing-2xl);">
-                    Let's discuss your event and create something extraordinary together</p>
-                <div style="display: flex; gap: var(--spacing-lg); justify-content: center; flex-wrap: wrap;">
-                    <a href="tel:+919650125822" class="btn btn-lg"
-                        style="background: var(--color-white); color: var(--color-primary);">Call Now</a>
-                    <a href="https://wa.me/919650125822" target="_blank" class="btn btn-whatsapp btn-lg">WhatsApp
-                        Us</a>
+    <!-- Premium CTA Section -->
+    <section class="premium-cta-masterpiece">
+        <div class="cta-lux-bg-wrapper">
+            <div class="cta-lux-bg" style="background-image: url('assets/img/contact-cta-lux.jpg');"></div>
+            <div class="cta-lux-overlay"></div>
+        </div>
+
+        <div class="container relative z-10">
+            <div class="cta-imperial-card scroll-animate">
+                <div class="cta-lux-particles">
+                    <span></span><span></span><span></span><span></span><span></span>
+                </div>
+                <h2 class="cta-lux-title">Ready to Experience <br><span class="text-gradient">Ultimate Luxury?</span>
+                </h2>
+                <div class="premium-divider mx-auto my-lg"></div>
+                <p class="cta-lux-subtitle">From concept to curtain call, we orchestrate perfection. Let's begin your
+                    legacy journey today.</p>
+                <div class="cta-lux-buttons">
+                    <a href="tel:+919650125822" class="btn btn-premium btn-lg">Start Planning Now</a>
+                    <a href="https://wa.me/919650125822" target="_blank" class="btn btn-whatsapp-lux btn-lg">Consult via
+                        WhatsApp</a>
                 </div>
             </div>
         </div>
     </section>
+
+    <style>
+        .premium-cta-masterpiece {
+            position: relative;
+            padding: var(--spacing-4xl) 0;
+            overflow: hidden;
+            background: #0f172a;
+            color: white;
+            text-align: center;
+        }
+
+        /* Utility classes fix */
+        .relative {
+            position: relative;
+        }
+
+        .z-10 {
+            z-index: 10;
+        }
+
+        .mx-auto {
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .my-lg {
+            margin-top: var(--spacing-lg);
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .cta-lux-bg-wrapper {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        .cta-lux-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            animation: cta-ken-burns 15s linear infinite alternate;
+        }
+
+        @keyframes cta-ken-burns {
+            0% {
+                transform: scale(1);
+            }
+
+            100% {
+                transform: scale(1.15);
+            }
+        }
+
+        .cta-lux-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, rgba(15, 23, 42, 0.4) 0%, rgba(15, 23, 42, 0.95) 100%);
+        }
+
+        .cta-imperial-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(40px);
+            -webkit-backdrop-filter: blur(40px);
+            padding: 5rem 2rem;
+            border-radius: var(--radius-3xl);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            max-width: 950px;
+            margin: 0 auto;
+            position: relative;
+            box-shadow: 0 50px 100px -20px rgba(0, 0, 0, 0.8);
+            opacity: 0;
+            transform: translateY(30px);
+            animation: cta-fade-up 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes cta-fade-up {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .cta-lux-title {
+            font-size: clamp(2.5rem, 6.5vw, 5rem);
+            font-weight: 950;
+            line-height: 1;
+            margin-bottom: var(--spacing-lg);
+            color: white !important;
+            text-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            letter-spacing: -2px;
+        }
+
+        .text-gradient {
+            background: linear-gradient(135deg, #fff 30%, var(--color-accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .premium-divider {
+            height: 3px;
+            width: 100px;
+            background: var(--color-accent);
+            border-radius: 5px;
+            box-shadow: 0 0 15px var(--color-accent);
+        }
+
+        .cta-lux-subtitle {
+            font-size: var(--text-2xl);
+            color: rgba(255, 255, 255, 0.95);
+            margin-bottom: var(--spacing-4xl);
+            font-weight: 400;
+            max-width: 750px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.5;
+        }
+
+        .cta-lux-buttons {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-whatsapp-lux {
+            background: #25D366;
+            color: white;
+            box-shadow: 0 10px 30px rgba(37, 211, 102, 0.4);
+            border: none;
+        }
+
+        .btn-whatsapp-lux:hover {
+            background: #128C7E;
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(37, 211, 102, 0.6);
+        }
+
+        .cta-lux-particles span {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background: var(--color-accent);
+            border-radius: 50%;
+            pointer-events: none;
+            opacity: 0.3;
+            filter: blur(2px);
+            animation: animate-cta-particles 5s linear infinite;
+        }
+
+        .cta-lux-particles span:nth-child(1) {
+            top: 15%;
+            left: 5%;
+            animation-delay: 0s;
+        }
+
+        .cta-lux-particles span:nth-child(2) {
+            top: 65%;
+            left: 85%;
+            animation-delay: 1.5s;
+        }
+
+        .cta-lux-particles span:nth-child(3) {
+            top: 35%;
+            left: 45%;
+            animation-delay: 2.5s;
+        }
+
+        .cta-lux-particles span:nth-child(4) {
+            top: 5%;
+            left: 95%;
+            animation-delay: 3s;
+        }
+
+        .cta-lux-particles span:nth-child(5) {
+            top: 85%;
+            left: 15%;
+            animation-delay: 1s;
+        }
+
+        @keyframes animate-cta-particles {
+            0% {
+                transform: translateY(0) scale(1);
+                opacity: 0;
+            }
+
+            50% {
+                opacity: 0.8;
+            }
+
+            100% {
+                transform: translateY(-100px) scale(0);
+                opacity: 0;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .cta-imperial-card {
+                padding: 3.5rem 1.5rem;
+            }
+
+            .cta-lux-title {
+                font-size: 2.8rem;
+            }
+
+            .cta-lux-subtitle {
+                font-size: 1.25rem;
+            }
+
+            .cta-lux-buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
 
     <!-- Footer -->
     <footer class="footer">

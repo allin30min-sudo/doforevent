@@ -1,58 +1,88 @@
-// City Database with Emojis
+// Pan-India City & State Database with Emojis
 const INDIAN_CITIES = [
-    { name: 'Delhi', emoji: '🏛️', popular: true },
-    { name: 'Mumbai', emoji: '🌉', popular: true },
-    { name: 'Bengaluru', emoji: '🌆', popular: true },
-    { name: 'Chennai', emoji: '🛕', popular: true },
-    { name: 'Hyderabad', emoji: '🕌', popular: true },
-    { name: 'Kolkata', emoji: '🎭', popular: true },
-    { name: 'Jaipur', emoji: '🏰', popular: true },
-    { name: 'Agra', emoji: '🕌', popular: true },
-    { name: 'Pune', emoji: '🎓', popular: true },
-    { name: 'Ahmedabad', emoji: '🏛️', popular: true },
+    // Top Tier / Popular
+    { name: 'Delhi', state: 'Delhi NCR', emoji: '🏛️', popular: true },
+    { name: 'Mumbai', state: 'Maharashtra', emoji: '🌉', popular: true },
+    { name: 'Bengaluru', state: 'Karnataka', emoji: '🌆', popular: true },
+    { name: 'Chennai', state: 'Tamil Nadu', emoji: '🛕', popular: true },
+    { name: 'Hyderabad', state: 'Telangana', emoji: '🕌', popular: true },
+    { name: 'Kolkata', state: 'West Bengal', emoji: '🎭', popular: true },
+    { name: 'Jaipur', state: 'Rajasthan', emoji: '🏰', popular: true },
+    { name: 'Pune', state: 'Maharashtra', emoji: '🎓', popular: true },
+    { name: 'Ahmedabad', state: 'Gujarat', emoji: '🏛️', popular: true },
+    { name: 'Lucknow', state: 'Uttar Pradesh', emoji: '🕌', popular: true },
+    { name: 'Chandigarh', state: 'Punjab/Haryana', emoji: '🌳', popular: true },
+    { name: 'Goa', state: 'Goa', emoji: '🏖️', popular: true },
 
-    // Additional Cities
-    { name: 'Surat', emoji: '💎', popular: false },
-    { name: 'Lucknow', emoji: '🕌', popular: false },
-    { name: 'Kanpur', emoji: '🏭', popular: false },
-    { name: 'Nagpur', emoji: '🍊', popular: false },
-    { name: 'Indore', emoji: '🏛️', popular: false },
-    { name: 'Thane', emoji: '🌆', popular: false },
-    { name: 'Bhopal', emoji: '🏞️', popular: false },
-    { name: 'Visakhapatnam', emoji: '🏖️', popular: false },
-    { name: 'Pimpri-Chinchwad', emoji: '🏭', popular: false },
-    { name: 'Patna', emoji: '🏛️', popular: false },
-    { name: 'Vadodara', emoji: '🏰', popular: false },
-    { name: 'Ghaziabad', emoji: '🏙️', popular: false },
-    { name: 'Ludhiana', emoji: '🧵', popular: false },
-    { name: 'Nashik', emoji: '🍇', popular: false },
-    { name: 'Faridabad', emoji: '🏙️', popular: false },
-    { name: 'Meerut', emoji: '🏛️', popular: false },
-    { name: 'Rajkot', emoji: '🏛️', popular: false },
-    { name: 'Varanasi', emoji: '🕉️', popular: false },
-    { name: 'Srinagar', emoji: '🏔️', popular: false },
-    { name: 'Amritsar', emoji: '🕌', popular: false },
-    { name: 'Chandigarh', emoji: '🌳', popular: false },
-    { name: 'Jodhpur', emoji: '🏰', popular: false },
-    { name: 'Udaipur', emoji: '🏰', popular: false },
-    { name: 'Guwahati', emoji: '🏞️', popular: false },
-    { name: 'Bhubaneswar', emoji: '🛕', popular: false },
-    { name: 'Dehradun', emoji: '🏔️', popular: false },
-    { name: 'Shimla', emoji: '⛰️', popular: false },
-    { name: 'Mysore', emoji: '🏰', popular: false },
-    { name: 'Kochi', emoji: '🌴', popular: false },
-    { name: 'Coimbatore', emoji: '🏭', popular: false },
-    { name: 'Madurai', emoji: '🛕', popular: false },
-    { name: 'Trivandrum', emoji: '🌴', popular: false },
-    { name: 'Goa', emoji: '🏖️', popular: false },
-    { name: 'Ranchi', emoji: '🏞️', popular: false },
-    { name: 'Raipur', emoji: '🏛️', popular: false },
-    { name: 'Jammu', emoji: '🏔️', popular: false },
-    { name: 'Jabalpur', emoji: '🏞️', popular: false },
-    { name: 'Gwalior', emoji: '🏰', popular: false },
-    { name: 'Vijayawada', emoji: '🏛️', popular: false },
-    { name: 'Noida', emoji: '🏙️', popular: false },
-    { name: 'Gurugram', emoji: '🏢', popular: false }
+    // Delhi NCR
+    { name: 'Noida', state: 'Uttar Pradesh', emoji: '🏙️', popular: false },
+    { name: 'Gurugram', state: 'Haryana', emoji: '🏢', popular: false },
+    { name: 'Ghaziabad', state: 'Uttar Pradesh', emoji: '🏙️', popular: false },
+    { name: 'Faridabad', state: 'Haryana', emoji: '🏙️', popular: false },
+    { name: 'Greater Noida', state: 'Uttar Pradesh', emoji: '🏢', popular: false },
+
+    // Maharashtra
+    { name: 'Nagpur', state: 'Maharashtra', emoji: '🍊', popular: false },
+    { name: 'Thane', state: 'Maharashtra', emoji: '🌆', popular: false },
+    { name: 'Nashik', state: 'Maharashtra', emoji: '🍇', popular: false },
+    { name: 'Aurangabad', state: 'Maharashtra', emoji: '🏰', popular: false },
+    { name: 'Navi Mumbai', state: 'Maharashtra', emoji: '🏘️', popular: false },
+    { name: 'Solapur', state: 'Maharashtra', emoji: '🧵', popular: false },
+
+    // North India
+    { name: 'Agra', state: 'Uttar Pradesh', emoji: '🕌', popular: false },
+    { name: 'Varanasi', state: 'Uttar Pradesh', emoji: '🕉️', popular: false },
+    { name: 'Kanpur', state: 'Uttar Pradesh', emoji: '🏭', popular: false },
+    { name: 'Meerut', state: 'Uttar Pradesh', emoji: '🏛️', popular: false },
+    { name: 'Prayagraj', state: 'Uttar Pradesh', emoji: '🌊', popular: false },
+    { name: 'Amritsar', state: 'Punjab', emoji: '🕌', popular: false },
+    { name: 'Ludhiana', state: 'Punjab', emoji: '🧵', popular: false },
+    { name: 'Jalandhar', state: 'Punjab', emoji: '🏟️', popular: false },
+    { name: 'Ludhiana', state: 'Punjab', emoji: '🧶', popular: false },
+    { name: 'Patiala', state: 'Punjab', emoji: '🏛️', popular: false },
+    { name: 'Dehradun', state: 'Uttarakhand', emoji: '🏔️', popular: false },
+    { name: 'Haridwar', state: 'Uttarakhand', emoji: '🕉️', popular: false },
+    { name: 'Shimla', state: 'Himachal Pradesh', emoji: '⛰️', popular: false },
+    { name: 'Srinagar', state: 'Jammu & Kashmir', emoji: '🏔️', popular: false },
+    { name: 'Jammu', state: 'Jammu & Kashmir', emoji: '🏔️', popular: false },
+
+    // South India
+    { name: 'Mysore', state: 'Karnataka', emoji: '🏰', popular: false },
+    { name: 'Mangaluru', state: 'Karnataka', emoji: '🏖️', popular: false },
+    { name: 'Coimbatore', state: 'Tamil Nadu', emoji: '🏭', popular: false },
+    { name: 'Madurai', state: 'Tamil Nadu', emoji: '🛕', popular: false },
+    { name: 'Kochi', state: 'Kerala', emoji: '🌴', popular: false },
+    { name: 'Trivandrum', state: 'Kerala', emoji: '🌴', popular: false },
+    { name: 'Visakhapatnam', state: 'Andhra Pradesh', emoji: '🏖️', popular: false },
+    { name: 'Vijayawada', state: 'Andhra Pradesh', emoji: '🏛️', popular: false },
+    { name: 'Tirupati', state: 'Andhra Pradesh', emoji: '🛕', popular: false },
+
+    // West India
+    { name: 'Surat', state: 'Gujarat', emoji: '💎', popular: false },
+    { name: 'Vadodara', state: 'Gujarat', emoji: '🏰', popular: false },
+    { name: 'Rajkot', state: 'Gujarat', emoji: '🏛️', popular: false },
+    { name: 'Udaipur', state: 'Rajasthan', emoji: '🏰', popular: false },
+    { name: 'Jodhpur', state: 'Rajasthan', emoji: '🏰', popular: false },
+    { name: 'Kota', state: 'Rajasthan', emoji: '🎓', popular: false },
+
+    // Central India
+    { name: 'Indore', state: 'Madhya Pradesh', emoji: '🏛️', popular: false },
+    { name: 'Bhopal', state: 'Madhya Pradesh', emoji: '🏞️', popular: false },
+    { name: 'Gwalior', state: 'Madhya Pradesh', emoji: '🏰', popular: false },
+    { name: 'Jabalpur', state: 'Madhya Pradesh', emoji: '🏞️', popular: false },
+    { name: 'Raipur', state: 'Chhattisgarh', emoji: '🏛️', popular: false },
+    { name: 'Bhilai', state: 'Chhattisgarh', emoji: '🏭', popular: false },
+
+    // East & North East
+    { name: 'Patna', state: 'Bihar', emoji: '🏛️', popular: false },
+    { name: 'Gaya', state: 'Bihar', emoji: '🕉️', popular: false },
+    { name: 'Bhubaneswar', state: 'Odisha', emoji: '🛕', popular: false },
+    { name: 'Cuttack', state: 'Odisha', emoji: '🏛️', popular: false },
+    { name: 'Guwahati', state: 'Assam', emoji: '🏞️', popular: false },
+    { name: 'Ranchi', state: 'Jharkhand', emoji: '🏞️', popular: false },
+    { name: 'Jamshedpur', state: 'Jharkhand', emoji: '🏭', popular: false },
+    { name: 'Shillong', state: 'Meghalaya', emoji: '🏔️', popular: false },
+    { name: 'Imphal', state: 'Manipur', emoji: '🏯', popular: false }
 ];
 
 // Get popular cities
@@ -65,13 +95,14 @@ function getAllCities() {
     return INDIAN_CITIES;
 }
 
-// Search cities by name
+// Search cities by name or state
 function searchCities(query) {
     if (!query) return [];
     const lowerQuery = query.toLowerCase();
     return INDIAN_CITIES.filter(city =>
-        city.name.toLowerCase().includes(lowerQuery)
-    ).slice(0, 10); // Limit to 10 suggestions
+        city.name.toLowerCase().includes(lowerQuery) ||
+        city.state.toLowerCase().includes(lowerQuery)
+    ).slice(0, 15); // Increased limit to 15 for better state-based discovery
 }
 
 // Get city by name

@@ -38,22 +38,19 @@
             transform: scale(1.15) rotateY(10deg);
         }
 
-        /* Hero Slider Styles */
-        .hero-slider {
+        /* Luxury Hero Styles */
+        .hero-slider-lux {
             position: relative;
-            min-height: 75vh;
-            overflow: hidden;
+            min-height: 85vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: white;
-            text-align: center;
+            overflow: hidden;
             background: #000;
-            padding-top: 120px;
-            /* Added padding to clear the fixed navbar */
+            padding-top: 100px;
         }
 
-        .hero-slider .slide {
+        .lux-slide {
             position: absolute;
             top: 0;
             left: 0;
@@ -62,42 +59,99 @@
             background-size: cover;
             background-position: center;
             opacity: 0;
-            transition: opacity 1.5s ease-in-out, transform 10s linear;
+            transition: opacity 2s cubic-bezier(0.4, 0, 0.2, 1), transform 15s linear;
+            transform: scale(1);
+            will-change: transform, opacity;
+        }
+
+        .lux-slide.active {
+            opacity: 1;
+            transform: scale(1.12);
+        }
+
+        .hero-overlay-lux {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, rgba(15, 23, 42, 0.5) 0%, rgba(15, 23, 42, 0.9) 100%);
+            backdrop-filter: blur(3px);
+            -webkit-backdrop-filter: blur(3px);
             z-index: 1;
         }
 
-        .hero-slider .slide.active {
-            opacity: 1;
-            transform: scale(1.1);
-        }
-
-        .hero-slider .hero-content {
+        .hero-content {
             position: relative;
-            z-index: 2;
-            padding: var(--spacing-2xl) var(--spacing-lg);
+            z-index: 10;
+            text-align: center;
+            color: white;
+            padding: 0 var(--spacing-md);
+            max-width: 1000px;
         }
 
-        .hero-slider h1 {
-            font-size: clamp(2.5rem, 6vw, 4.5rem);
-            margin-bottom: var(--spacing-md);
-            color: #ffffff !important;
-            -webkit-text-fill-color: #ffffff !important;
-            background: none !important;
-            line-height: 1.1;
-            text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.7);
+        .premium-title {
+            font-size: clamp(2.8rem, 8vw, 6rem);
+            font-weight: 950;
+            line-height: 0.95;
+            margin-bottom: var(--spacing-lg);
+            color: white !important;
+            /* High-Contrast Multi-Layer Shadow */
+            text-shadow:
+                0 10px 30px rgba(0, 0, 0, 0.8),
+                0 0 100px rgba(0, 0, 0, 0.4);
+            letter-spacing: -2px;
+            opacity: 0;
+            transform: translate3d(0, 40px, 0);
+            animation: lux-reveal-text 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both;
         }
 
-        .hero-slider p {
-            color: #ffffff !important;
-            -webkit-text-fill-color: #ffffff !important;
-            background: none !important;
-            font-size: var(--text-xl);
-            text-shadow: 1px 1px 6px rgba(0, 0, 0, 0.8);
+        .royal-gold {
+            background: linear-gradient(to bottom, #fff 30%, var(--color-accent) 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
         }
 
-        .hero-slider .city-name {
-            color: #ffffff !important;
-            text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.8);
+        .text-glow {
+            background: linear-gradient(to right, #fff, var(--color-accent), #fff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.2));
+        }
+
+        .premium-subtitle {
+            font-size: var(--text-2xl);
+            font-weight: 400;
+            color: rgba(255, 255, 255, 0.95);
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.5;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+            opacity: 0;
+            transform: translate3d(0, 30px, 0);
+            animation: lux-reveal-text 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.6s both;
+        }
+
+        @keyframes lux-reveal-text {
+            0% {
+                opacity: 0;
+                transform: translate3d(0, 40px, 0);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translate3d(0, 0, 0);
+            }
+        }
+
+        .premium-title,
+        .premium-subtitle {
+            will-change: transform, opacity;
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
         }
     </style>
 </head>
@@ -121,301 +175,390 @@
         </div>
     </nav>
 
-    <section class="hero-slider" id="servicesHero">
-        <div class="slide active"
-            style="background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('assets/img/service-hero-1.jpg');">
-        </div>
-        <div class="slide"
-            style="background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('assets/img/service-hero-2.jpg');">
-        </div>
-        <div class="slide"
-            style="background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('assets/img/service-hero-3.jpg');">
-        </div>
-        <div class="slide"
-            style="background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('assets/img/service-hero-4.jpg');">
-        </div>
-        <div class="slide"
-            style="background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('assets/img/service-hero-5.jpg');">
-        </div>
+    <section class="hero-slider-lux" id="servicesHero">
+        <!-- Cinematic Backgrounds -->
+        <div class="lux-slide active" style="background-image: url('assets/img/service-hero-1-lux.jpg');"></div>
+        <div class="lux-slide" style="background-image: url('assets/img/service-hero-2-lux.jpg');"></div>
+        <div class="lux-slide" style="background-image: url('assets/img/service-hero-3-lux.jpg');"></div>
+        <div class="lux-slide" style="background-image: url('assets/img/service-hero-4-lux.jpg');"></div>
+        <div class="lux-slide" style="background-image: url('assets/img/service-hero-5-lux.jpg');"></div>
 
-        <div class="hero-content">
-            <h1>Explore Our Services in Your City or Preferred Location</h1>
-            <p>Discover personalized event management services tailored to <span class="city-name"
-                    style="font-weight: 700; color: var(--color-secondary);">your city</span></p>
+        <!-- Dramatic Overlay -->
+        <div class="hero-overlay-lux"></div>
+
+        <!-- Cinema Content -->
+        <div class="hero-content luxury-reveal">
+            <h1 class="premium-title"><span class="royal-gold">Exceptional Events in</span> <br><span
+                    class="text-glow city-name">Your City</span></h1>
+            <p class="premium-subtitle">Orchestrating unforgettable luxury experiences precisely where you need them.
+                From grand weddings to elite corporate galas.</p>
         </div>
     </section>
 
-    <!-- Guided Search Section -->
-    <section class="section"
-        style="background: linear-gradient(135deg, rgba(239, 68, 68, 0.05) 0%, rgba(245, 158, 11, 0.05) 100%);">
-        <div class="container">
-            <div class="text-center mb-2xl scroll-animate">
-                <h2>Find Your Perfect Event Service</h2>
-                <p>Follow the steps to discover tailored event solutions</p>
+    <!-- Imperial Guided Search Section -->
+    <section class="section imperial-search-section">
+        <div class="imperial-bg-glow"></div>
+        <div class="container relative z-10">
+            <div class="text-center mb-3xl scroll-animate">
+                <span class="premium-badge">Precision Discovery</span>
+                <h2 class="imperial-heading">Find Your Perfect Event Service</h2>
+                <div class="premium-divider"></div>
+                <p class="imperial-subheading">Follow our curated steps to discover tailored event solutions exactly
+                    where you need them.</p>
             </div>
 
-            <div class="step-search-container">
+            <div class="imperial-step-container">
                 <!-- Step 1: Service Search -->
-                <div class="search-step" id="serviceStep">
-                    <div class="step-number">1</div>
-                    <div class="search-box" id="serviceSearchBox">
+                <div class="imperial-search-step" id="serviceStep">
+                    <div class="halo-connector"></div>
+                    <div class="step-halo">
+                        <span class="halo-inner">1</span>
+                        <div class="halo-ring"></div>
+                    </div>
+                    <div class="imperial-glass-card" id="serviceSearchBox">
                         <div class="search-icon">🎯</div>
                         <div class="search-input-wrapper">
-                            <label for="serviceSearchInput" class="search-label">Select Service</label>
-                            <input type="text" id="serviceSearchInput" class="search-input"
+                            <label for="serviceSearchInput" class="imperial-label">Select Service</label>
+                            <input type="text" id="serviceSearchInput" class="imperial-input"
                                 placeholder="Search for event service..." autocomplete="off">
-                            <div id="serviceSuggestions" class="search-suggestions"></div>
+                            <div id="serviceSuggestions" class="imperial-suggestions"></div>
                         </div>
                     </div>
-                    <div class="selected-display" id="selectedServiceDisplay" style="display: none;">
-                        <span class="selected-text" id="selectedServiceText"></span>
-                        <button class="change-btn" onclick="clearServiceSelection()">Change</button>
+                    <div class="selected-display-lux" id="selectedServiceDisplay" style="display: none;">
+                        <span class="selected-text-lux" id="selectedServiceText"></span>
+                        <button class="change-btn-lux" onclick="clearServiceSelection()">Change</button>
                     </div>
                 </div>
-
-                <div class="step-arrow">→</div>
 
                 <!-- Step 2: City Search -->
-                <div class="search-step" id="cityStep">
-                    <div class="step-number">2</div>
-                    <div class="search-box disabled" id="citySearchBox">
+                <div class="imperial-search-step" id="cityStep">
+                    <div class="step-halo">
+                        <span class="halo-inner">2</span>
+                        <div class="halo-ring"></div>
+                    </div>
+                    <div class="imperial-glass-card disabled" id="citySearchBox">
                         <div class="search-icon">📍</div>
                         <div class="search-input-wrapper">
-                            <label for="citySearchInput" class="search-label">Select City</label>
-                            <input type="text" id="citySearchInput" class="search-input"
+                            <label for="citySearchInput" class="imperial-label">Select City</label>
+                            <input type="text" id="citySearchInput" class="imperial-input"
                                 placeholder="Search your city..." autocomplete="off" disabled>
-                            <div id="citySuggestions" class="search-suggestions"></div>
+                            <div id="citySuggestions" class="imperial-suggestions"></div>
                         </div>
                     </div>
-                    <div class="selected-display" id="selectedCityDisplay" style="display: none;">
-                        <span class="selected-text" id="selectedCityText"></span>
-                        <button class="change-btn" onclick="clearCitySelection()">Change</button>
+                    <div class="selected-display-lux" id="selectedCityDisplay" style="display: none;">
+                        <span class="selected-text-lux" id="selectedCityText"></span>
+                        <button class="change-btn-lux" onclick="clearCitySelection()">Change</button>
                     </div>
                 </div>
 
-                <div class="step-arrow">→</div>
-
                 <!-- Step 3: Search Button -->
-                <div class="search-step" id="searchButtonStep">
-                    <div class="step-number">3</div>
-                    <button id="finalSearchBtn" class="btn btn-primary btn-lg" style="width: 100%; display: none;">
-                        <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24" style="margin-right: 8px;">
-                            <path
-                                d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z" />
-                        </svg>
-                        Search Now
-                    </button>
-                    <div class="search-hint" id="searchHint">
-                        <p
-                            style="text-align: center; color: var(--color-dark-3); font-size: var(--text-sm); margin: 0;">
-                            Select service and city to continue
-                        </p>
+                <div class="imperial-search-step" id="searchButtonStep">
+                    <div class="step-halo">
+                        <span class="halo-inner">3</span>
+                        <div class="halo-ring"></div>
+                    </div>
+                    <div class="final-action-lux">
+                        <button id="finalSearchBtn" class="btn btn-premium btn-lg w-full" style="display: none;">
+                            <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"
+                                style="margin-right: 12px;">
+                                <path
+                                    d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z" />
+                            </svg>
+                            Explore Opportunities
+                        </button>
+                        <div class="imperial-hint" id="searchHint">
+                            <p>Complete the selection to proceed</p>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
+    </section>
 
-        <style>
-            .step-search-container {
-                max-width: 1100px;
-                margin: 0 auto;
-                display: grid;
-                grid-template-columns: 1fr auto 1fr auto 200px;
-                gap: var(--spacing-lg);
-                align-items: center;
+    <style>
+        .imperial-search-section {
+            background: #0f172a;
+            position: relative;
+            padding: var(--spacing-4xl) 0;
+            z-index: 15;
+            /* Ensure it's above following sections */
+        }
+
+        .imperial-bg-glow {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, rgba(30, 27, 75, 0.4) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .imperial-heading {
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            font-weight: 800;
+            color: white;
+            margin-bottom: 1rem;
+            letter-spacing: -1px;
+        }
+
+        .imperial-subheading {
+            font-size: var(--text-xl);
+            color: rgba(255, 255, 255, 0.7);
+            max-width: 700px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        .imperial-step-container {
+            max-width: 1200px;
+            margin: 4rem auto 0;
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 3rem;
+            position: relative;
+        }
+
+        .imperial-search-step {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            z-index: 1;
+            /* Base z-index */
+            transition: z-index 0.3s;
+        }
+
+        .imperial-search-step:focus-within {
+            z-index: 50;
+            /* Elevate when interacting */
+        }
+
+        /* Golden Halo Indicators */
+        .step-halo {
+            width: 50px;
+            height: 50px;
+            position: relative;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+        }
+
+        .halo-inner {
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: white;
+            position: relative;
+            z-index: 2;
+        }
+
+        .halo-ring {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 2px solid var(--color-accent);
+            border-radius: 50%;
+            box-shadow: 0 0 15px var(--color-accent);
+            animation: halo-pulse 2s infinite;
+        }
+
+        @keyframes halo-pulse {
+            0% {
+                transform: scale(1);
+                opacity: 1;
             }
 
-            .search-step {
-                position: relative;
+            100% {
+                transform: scale(1.4);
+                opacity: 0;
+            }
+        }
+
+        /* Imperial Glass Cards */
+        .imperial-glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-2xl);
+            padding: 2.5rem 2rem;
+            width: 100%;
+            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+            display: flex;
+            gap: 1.5rem;
+            position: relative;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .imperial-glass-card:not(.disabled):hover {
+            transform: translateY(-10px);
+            background: rgba(255, 255, 255, 0.07);
+            border-color: var(--color-accent);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
+        }
+
+        .imperial-glass-card.disabled {
+            opacity: 0.3;
+            filter: grayscale(1);
+            pointer-events: none;
+        }
+
+        .search-icon {
+            font-size: 2.2rem;
+            filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.2));
+        }
+
+        .imperial-label {
+            display: block;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--color-accent);
+            margin-bottom: 0.75rem;
+        }
+
+        .imperial-input {
+            width: 100%;
+            background: transparent;
+            border: none;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 1.1rem;
+            padding: 0.5rem 0;
+            transition: all 0.3s ease;
+        }
+
+        .imperial-input:focus {
+            outline: none;
+            border-color: var(--color-accent);
+        }
+
+        .imperial-input::placeholder {
+            color: rgba(255, 255, 255, 0.3);
+        }
+
+        /* Selected Display Luxury */
+        .selected-display-lux {
+            margin-top: 1.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--radius-full);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            animation: lux-pop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes lux-pop {
+            0% {
+                transform: scale(0.8);
+                opacity: 0;
             }
 
-            .step-number {
-                position: absolute;
-                top: -15px;
-                left: 20px;
-                background: var(--color-primary);
-                color: white;
-                width: 30px;
-                height: 30px;
-                border-radius: var(--radius-full);
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                font-weight: 700;
-                font-size: var(--text-sm);
-                z-index: 10;
-                box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+            100% {
+                transform: scale(1);
+                opacity: 1;
             }
+        }
 
-            .search-box {
-                background: white;
-                border-radius: var(--radius-xl);
-                padding: var(--spacing-xl);
-                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-                border: 2px solid var(--color-light-2);
-                transition: all 0.3s ease;
-                display: flex;
-                gap: var(--spacing-md);
-                align-items: flex-start;
+        .selected-text-lux {
+            color: white;
+            font-weight: 600;
+        }
+
+        .change-btn-lux {
+            background: none;
+            border: none;
+            color: var(--color-accent);
+            font-weight: 700;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            cursor: pointer;
+            padding: 0;
+        }
+
+        .imperial-hint p {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.9rem;
+            margin-top: 1.5rem;
+            font-style: italic;
+        }
+
+        @media (max-width: 1024px) {
+            .imperial-step-container {
+                grid-template-columns: 1fr;
+                gap: 4rem;
             }
+        }
+    </style>
+    <style>
+        .step-search-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr auto 1fr auto 200px;
+            gap: var(--spacing-lg);
+            align-items: center;
+        }
 
-            .search-box:not(.disabled):hover {
-                transform: translateY(-5px);
-                box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
-                border-color: var(--color-primary);
-            }
+        /* Suggestions Luxury */
+        .imperial-suggestions {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-xl);
+            margin-top: 10px;
+            max-height: 250px;
+            overflow-y: auto;
+            z-index: 100;
+            display: none;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+        }
 
-            .search-box:focus-within {
-                border-color: var(--color-primary);
-                box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.1);
-            }
+        .imperial-suggestions.active {
+            display: block;
+        }
 
-            .search-box.disabled {
-                opacity: 0.5;
-                pointer-events: none;
-                background: var(--color-light-1);
-            }
+        .imperial-suggestion-item {
+            padding: 1rem 1.5rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: rgba(255, 255, 255, 0.8);
+        }
 
-            .search-icon {
-                font-size: 2rem;
-                flex-shrink: 0;
-            }
+        .imperial-suggestion-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--color-accent);
+        }
 
-            .search-input-wrapper {
-                flex: 1;
-                position: relative;
-            }
+        /* Active State for Halos */
+        .imperial-search-step.step-active .halo-ring {
+            border-color: #fff;
+            box-shadow: 0 0 20px #fff;
+            background: rgba(255, 255, 255, 0.1);
+        }
 
-            .search-label {
-                display: block;
-                font-size: var(--text-xs);
-                font-weight: 700;
-                text-transform: uppercase;
-                letter-spacing: 0.5px;
-                color: var(--color-dark-3);
-                margin-bottom: var(--spacing-xs);
-            }
-
-            .search-input {
-                width: 100%;
-                padding: var(--spacing-sm) 0;
-                border: none;
-                border-bottom: 2px solid var(--color-light-3);
-                font-size: var(--text-lg);
-                font-weight: 500;
-                transition: all 0.3s ease;
-                outline: none;
-            }
-
-            .search-input:focus {
-                border-bottom-color: var(--color-primary);
-            }
-
-            .search-input::placeholder {
-                color: var(--color-dark-4);
-                font-weight: 400;
-            }
-
-            .search-input:disabled {
-                background: transparent;
-                cursor: not-allowed;
-            }
-
-            .step-arrow {
-                font-size: 2rem;
-                color: var(--color-dark-3);
-                font-weight: 700;
-            }
-
-            .search-suggestions {
-                position: absolute;
-                top: 100%;
-                left: 0;
-                right: 0;
-                background: white;
-                border: 2px solid var(--color-light-3);
-                border-radius: var(--radius-md);
-                margin-top: var(--spacing-sm);
-                max-height: 300px;
-                overflow-y: auto;
-                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-                z-index: 100;
-                display: none;
-            }
-
-            .search-suggestions.active {
-                display: block;
-            }
-
-            .suggestion-item {
-                padding: var(--spacing-md);
-                cursor: pointer;
-                transition: background 0.2s ease;
-                border-bottom: 1px solid var(--color-light-2);
-                display: flex;
-                align-items: center;
-                gap: var(--spacing-sm);
-            }
-
-            .suggestion-item:last-child {
-                border-bottom: none;
-            }
-
-            .suggestion-item:hover {
-                background: var(--color-light-1);
-            }
-
-            .selected-display {
-                margin-top: var(--spacing-md);
-                background: rgba(239, 68, 68, 0.1);
-                padding: var(--spacing-md);
-                border-radius: var(--radius-md);
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-            }
-
-            .selected-text {
-                font-weight: 600;
-                color: var(--color-primary);
-            }
-
-            .change-btn {
-                background: white;
-                border: 2px solid var(--color-primary);
-                color: var(--color-primary);
-                padding: var(--spacing-xs) var(--spacing-md);
-                border-radius: var(--radius-md);
-                cursor: pointer;
-                font-weight: 600;
-                font-size: var(--text-sm);
-                transition: all 0.3s ease;
-            }
-
-            .change-btn:hover {
-                background: var(--color-primary);
-                color: white;
-            }
-
-            .search-hint {
-                margin-top: var(--spacing-md);
-            }
-
-            @media (max-width: 1024px) {
-                .step-search-container {
-                    grid-template-columns: 1fr;
-                    gap: var(--spacing-xl);
-                }
-
-                .step-arrow {
-                    display: none;
-                }
-
-                #searchButtonStep {
-                    margin-top: var(--spacing-lg);
-                }
-            }
-        </style>
+        .imperial-search-step.step-complete .halo-ring {
+            background: var(--color-accent);
+            border-color: var(--color-accent);
+            box-shadow: 0 0 30px var(--color-accent);
+        }
+    </style>
     </section>
 
     <!-- Popular Cities Section -->
@@ -436,53 +579,257 @@
         </div>
     </section>
 
-    <!-- Service Categories -->
-    <section class="section">
-        <div class="container">
-            <div class="text-center mb-2xl scroll-animate">
-                <h2>Explore Our Service Categories</h2>
-                <p>Click on any category to explore all available services</p>
+    <!-- Royal Collection: Service Categories -->
+    <section class="section royal-collection-section">
+        <div class="royal-bg-accent"></div>
+        <div class="container relative z-10">
+            <div class="text-center mb-3xl scroll-animate">
+                <span class="premium-badge">Elite Categories</span>
+                <h2 class="royal-heading">Our Royal Collection</h2>
+                <div class="premium-divider"></div>
+                <p class="royal-subheading">A curated selection of our most prestigious event categories, each a
+                    masterpiece in its own right.</p>
             </div>
 
-            <div class="grid grid-4">
+            <div class="royal-grid">
                 <!-- Corporate Events Category -->
-                <div class="category-card-compact card scroll-animate"
+                <div class="majestic-glass-card scroll-animate"
                     onclick="window.location.href='services/corporate-events.html'">
-                    <span class="category-icon-large">🏢</span>
-                    <h3>Corporate Events</h3>
-                    <p style="margin-bottom: var(--spacing-lg);">Professional corporate event solutions</p>
-                    <span class="btn btn-outline">View All Services →</span>
+                    <div class="card-glow-halo"></div>
+                    <div class="majestic-icon-box">
+                        <span class="majestic-icon">🏢</span>
+                        <div class="majestic-glow"></div>
+                    </div>
+                    <div class="majestic-content">
+                        <h3>Corporate Events</h3>
+                        <p>Architecting institutional-grade corporate galas and strategic summits.</p>
+                        <div class="majestic-cta">
+                            <span class="btn-premium-mini">View Collection →</span>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Weddings Category -->
-                <div class="category-card-compact card scroll-animate"
+                <div class="majestic-glass-card scroll-animate" style="transition-delay: 0.2s;"
                     onclick="window.location.href='services/weddings.html'">
-                    <span class="category-icon-large">💒</span>
-                    <h3>Weddings</h3>
-                    <p style="margin-bottom: var(--spacing-lg);">Creating unforgettable wedding experiences</p>
-                    <span class="btn btn-outline">View All Services →</span>
+                    <div class="card-glow-halo"></div>
+                    <div class="majestic-icon-box">
+                        <span class="majestic-icon">💒</span>
+                        <div class="majestic-glow"></div>
+                    </div>
+                    <div class="majestic-content">
+                        <h3>Luxury Weddings</h3>
+                        <p>Orchestrating bespoke wedding experiences into timeless love stories.</p>
+                        <div class="majestic-cta">
+                            <span class="btn-premium-mini">View Collection →</span>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Celebrations Category -->
-                <div class="category-card-compact card scroll-animate"
+                <div class="majestic-glass-card scroll-animate" style="transition-delay: 0.4s;"
                     onclick="window.location.href='services/celebrations.html'">
-                    <span class="category-icon-large">🎉</span>
-                    <h3>Celebrations</h3>
-                    <p style="margin-bottom: var(--spacing-lg);">Festive celebrations and holiday events</p>
-                    <span class="btn btn-outline">View All Services →</span>
+                    <div class="card-glow-halo"></div>
+                    <div class="majestic-icon-box">
+                        <span class="majestic-icon">🎉</span>
+                        <div class="majestic-glow"></div>
+                    </div>
+                    <div class="majestic-content">
+                        <h3>Celebrations</h3>
+                        <p>Crafting elite festive galas and high-profile private celebrations.</p>
+                        <div class="majestic-cta">
+                            <span class="btn-premium-mini">View Collection →</span>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Entertainment Category -->
-                <div class="category-card-compact card scroll-animate"
+                <div class="majestic-glass-card scroll-animate" style="transition-delay: 0.6s;"
                     onclick="window.location.href='services/entertainment.html'">
-                    <span class="category-icon-large">🎭</span>
-                    <h3>Entertainment</h3>
-                    <p style="margin-bottom: var(--spacing-lg);">Spectacular entertainment experiences</p>
-                    <span class="btn btn-outline">View All Services →</span>
+                    <div class="card-glow-halo"></div>
+                    <div class="majestic-icon-box">
+                        <span class="majestic-icon">🎭</span>
+                        <div class="majestic-glow"></div>
+                    </div>
+                    <div class="majestic-content">
+                        <h3>Entertainment</h3>
+                        <p>Producing spectacular live performances and high-octane showcases.</p>
+                        <div class="majestic-cta">
+                            <span class="btn-premium-mini">View Collection →</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
+
+    <style>
+        .royal-collection-section {
+            background: #ffffff;
+            position: relative;
+            padding: var(--spacing-4xl) 0;
+            overflow: hidden;
+        }
+
+        .royal-bg-accent {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 40%;
+            height: 60%;
+            background: radial-gradient(circle at top right, rgba(15, 23, 42, 0.03) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .royal-heading {
+            font-size: clamp(2.5rem, 6vw, 3.5rem);
+            font-weight: 900;
+            color: var(--color-dark-1);
+            margin-bottom: 0.5rem;
+            letter-spacing: -2px;
+        }
+
+        .royal-subheading {
+            font-size: var(--text-xl);
+            color: var(--color-dark-3);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .royal-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+            margin-top: 3rem;
+        }
+
+        .majestic-glass-card {
+            position: relative;
+            background: #ffffff;
+            border: 1px solid #f1f5f9;
+            border-radius: var(--radius-xl);
+            padding: 2rem 1rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+        }
+
+        .card-glow-halo {
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at center, rgba(15, 23, 42, 0.02) 0%, transparent 60%);
+            opacity: 0;
+            transition: opacity 0.6s ease;
+        }
+
+        .majestic-glass-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--color-accent);
+            box-shadow: 0 40px 80px rgba(0, 0, 0, 0.1);
+        }
+
+        .majestic-glass-card:hover .card-glow-halo {
+            opacity: 1;
+        }
+
+        .majestic-icon-box {
+            position: relative;
+            width: 70px;
+            height: 70px;
+            margin: 0 auto 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2;
+        }
+
+        .majestic-icon {
+            font-size: 2.5rem;
+            position: relative;
+            z-index: 2;
+            transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .majestic-glow {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--color-accent);
+            border-radius: 50%;
+            opacity: 0.1;
+            transform: scale(0.8);
+            transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .majestic-glass-card:hover .majestic-icon {
+            transform: scale(1.2);
+        }
+
+        .majestic-glass-card:hover .majestic-glow {
+            opacity: 0.2;
+            transform: scale(1.3);
+            box-shadow: 0 0 30px var(--color-accent);
+        }
+
+        .majestic-content h3 {
+            font-size: 1.25rem;
+            font-weight: 800;
+            margin-bottom: 0.75rem;
+            color: var(--color-dark-1);
+        }
+
+        .majestic-content p {
+            font-size: 0.85rem;
+            color: var(--color-dark-3);
+            line-height: 1.5;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Mini Premium Button */
+        .btn-premium-mini {
+            display: inline-block;
+            padding: 0.6rem 1.2rem;
+            background: #0f172a;
+            color: white;
+            border-radius: var(--radius-full);
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.4s ease;
+            position: relative;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .majestic-glass-card:hover .btn-premium-mini {
+            background: var(--gradient-primary);
+            transform: scale(1.05);
+            box-shadow: 0 10px 20px rgba(239, 68, 68, 0.3);
+        }
+
+        @media (max-width: 1024px) {
+            .royal-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 640px) {
+            .royal-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .majestic-glass-card {
+                padding: 2rem 1.5rem;
+            }
+        }
+    </style>
 
     <!-- CTA Section -->
     <section class="section" style="background: var(--gradient-hero); color: var(--color-white);">
@@ -548,6 +895,18 @@
             const citySuggestions = document.getElementById('citySuggestions');
             const finalSearchBtn = document.getElementById('finalSearchBtn');
 
+            // Set Initial State
+            document.getElementById('serviceStep').classList.add('step-active');
+
+            // Auto-scroll and Focus on Search on load
+            setTimeout(() => {
+                const searchSec = document.querySelector('.imperial-search-section');
+                if (searchSec) {
+                    searchSec.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    if (serviceSearchInput) serviceSearchInput.focus();
+                }
+            }, 800); // Slight delay for smooth Ken Burns transition completion
+
             // 1. Service Search Handler
             if (serviceSearchInput && serviceSuggestions) {
                 serviceSearchInput.addEventListener('input', (e) => {
@@ -565,14 +924,14 @@
                     }
 
                     serviceSuggestions.innerHTML = results.map(service => `
-                        <div class="suggestion-item" data-url="${service.url}" data-name="${service.name}">
+                        <div class="imperial-suggestion-item" data-url="${service.url}" data-name="${service.name}">
                             <strong>${service.name}</strong>
-                            <span style="color: var(--color-dark-3); font-size: var(--text-sm);">${service.category}</span>
+                            <span style="color: rgba(255,255,255,0.5); font-size: 0.8rem;">${service.category}</span>
                         </div>
                     `).join('');
                     serviceSuggestions.classList.add('active');
 
-                    serviceSuggestions.querySelectorAll('.suggestion-item').forEach(item => {
+                    serviceSuggestions.querySelectorAll('.imperial-suggestion-item').forEach(item => {
                         item.addEventListener('click', () => {
                             selectedServiceData = {
                                 url: item.dataset.url,
@@ -584,6 +943,11 @@
                             document.getElementById('selectedServiceDisplay').style.display = 'flex';
                             document.getElementById('selectedServiceText').textContent = selectedServiceData.name;
                             serviceSuggestions.classList.remove('active');
+
+                            // Update Step State
+                            document.getElementById('serviceStep').classList.remove('step-active');
+                            document.getElementById('serviceStep').classList.add('step-complete');
+                            document.getElementById('cityStep').classList.add('step-active');
 
                             // Enable Step 2
                             document.getElementById('citySearchBox').classList.remove('disabled');
@@ -613,25 +977,34 @@
                     }
 
                     citySuggestions.innerHTML = results.map(city => `
-                        <div class="suggestion-item" data-name="${city.name}" data-emoji="${city.emoji}">
-                            <span style="font-size: 1.5rem; margin-right: 10px;">${city.emoji}</span>
-                            <strong>${city.name}</strong>
+                        <div class="imperial-suggestion-item" data-name="${city.name}" data-emoji="${city.emoji}" data-state="${city.state}">
+                            <span style="font-size: 1.2rem; margin-right: 12px;">${city.emoji}</span>
+                            <div style="display: flex; flex-direction: column;">
+                                <strong style="color: white;">${city.name}</strong>
+                                <span style="font-size: 0.75rem; color: rgba(255,255,255,0.5);">${city.state}</span>
+                            </div>
                         </div>
                     `).join('');
                     citySuggestions.classList.add('active');
 
-                    citySuggestions.querySelectorAll('.suggestion-item').forEach(item => {
+                    citySuggestions.querySelectorAll('.imperial-suggestion-item').forEach(item => {
                         item.addEventListener('click', () => {
                             selectedCityData = {
                                 name: item.dataset.name,
+                                state: item.dataset.state,
                                 emoji: item.dataset.emoji
                             };
 
                             // Update UI
                             document.getElementById('citySearchBox').style.display = 'none';
                             document.getElementById('selectedCityDisplay').style.display = 'flex';
-                            document.getElementById('selectedCityText').textContent = `${selectedCityData.emoji} ${selectedCityData.name}`;
+                            document.getElementById('selectedCityText').textContent = `${selectedCityData.emoji} ${selectedCityData.name}, ${selectedCityData.state}`;
                             citySuggestions.classList.remove('active');
+
+                            // Update Step State
+                            document.getElementById('cityStep').classList.remove('step-active');
+                            document.getElementById('cityStep').classList.add('step-complete');
+                            document.getElementById('searchButtonStep').classList.add('step-active');
 
                             checkFinalStep();
                         });
@@ -657,6 +1030,12 @@
                 document.getElementById('selectedServiceDisplay').style.display = 'none';
                 serviceSearchInput.value = '';
 
+                // Reset States
+                document.getElementById('serviceStep').classList.add('step-active');
+                document.getElementById('serviceStep').classList.remove('step-complete');
+                document.getElementById('cityStep').classList.remove('step-active');
+                document.getElementById('cityStep').classList.remove('step-complete');
+
                 // Reset city
                 window.clearCitySelection();
                 document.getElementById('citySearchBox').classList.add('disabled');
@@ -670,6 +1049,12 @@
                 document.getElementById('citySearchBox').style.display = 'flex';
                 document.getElementById('selectedCityDisplay').style.display = 'none';
                 citySearchInput.value = '';
+
+                // Reset State
+                document.getElementById('cityStep').classList.add('step-active');
+                document.getElementById('cityStep').classList.remove('step-complete');
+                document.getElementById('searchButtonStep').classList.remove('step-active');
+
                 checkFinalStep();
             };
 
@@ -762,7 +1147,7 @@
             });
 
             // Hero Slider Logic
-            const slides = document.querySelectorAll('#servicesHero .slide');
+            const slides = document.querySelectorAll('#servicesHero .lux-slide');
             let currentSlide = 0;
 
             function nextSlide() {

@@ -494,5 +494,51 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
+// ========== Navbar Tagline Typing Effect ==========
+const initNavbarTyping = () => {
+    const taglineElement = document.getElementById('navbarTagline');
+    if (!taglineElement) return;
+
+    const phrases = [
+        "You imagine the moment.",
+        "We design the magic.",
+        "We deliver perfection"
+    ];
+
+    let phraseIndex = 0;
+    let charIndex = 0;
+    let isDeleting = false;
+    let typingSpeed = 100;
+
+    const type = () => {
+        const currentPhrase = phrases[phraseIndex];
+
+        if (isDeleting) {
+            taglineElement.textContent = currentPhrase.substring(0, charIndex - 1);
+            charIndex--;
+            typingSpeed = 50;
+        } else {
+            taglineElement.textContent = currentPhrase.substring(0, charIndex + 1);
+            charIndex++;
+            typingSpeed = 100;
+        }
+
+        if (!isDeleting && charIndex === currentPhrase.length) {
+            isDeleting = true;
+            typingSpeed = 2000; // Pause at the end of the phrase
+        } else if (isDeleting && charIndex === 0) {
+            isDeleting = false;
+            phraseIndex = (phraseIndex + 1) % phrases.length;
+            typingSpeed = 500;
+        }
+
+        setTimeout(type, typingSpeed);
+    };
+
+    type();
+};
+
+document.addEventListener('DOMContentLoaded', initNavbarTyping);
+
 console.log('✨ DoFor Event - Website Loaded Successfully!');
 

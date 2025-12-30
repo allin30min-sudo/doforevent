@@ -18,15 +18,11 @@ class CityModal {
                     <p style="margin-bottom: var(--spacing-lg); color: var(--color-dark-3);">Choose your city to see personalized event services</p>
                     
                     <div class="city-search-container">
-                        <input type="text" id="modalCitySearch" class="city-search-input" placeholder="🔍 Search City..." autocomplete="off">
+                        <input type="text" id="modalCitySearch" class="city-search-input" placeholder="🔍 Search City or State..." autocomplete="off">
                         <div id="modalCitySuggestions" class="city-suggestions"></div>
                     </div>
 
                     <div class="popular-cities-grid" id="modalPopularCities"></div>
-
-                    <button id="confirmCityBtn" class="btn btn-primary btn-lg" style="width: 100%; margin-top: var(--spacing-xl);" disabled>
-                        Confirm & Continue
-                    </button>
                 </div>
             </div>
         `;
@@ -190,7 +186,7 @@ class CityModal {
         const popularCities = getPopularCities();
 
         container.innerHTML = popularCities.map(city => `
-            <div class="city-card-mini" data-city="${city.name}" data-emoji="${city.emoji}">
+            <div class="city-card-mini" data-city="${city.name}" data-state="${city.state || ''}" data-emoji="${city.emoji}">
                 <div class="city-emoji">${city.emoji}</div>
                 <div class="city-name">${city.name}</div>
             </div>
@@ -208,13 +204,8 @@ class CityModal {
         document.addEventListener('click', (e) => {
             const cityCard = e.target.closest('.city-card-mini');
             if (cityCard) {
-                this.selectCity(cityCard.dataset.city, cityCard.dataset.emoji);
+                this.selectCity(cityCard.dataset.city, cityCard.dataset.state || '', cityCard.dataset.emoji);
             }
-        });
-
-        // Confirm button
-        document.getElementById('confirmCityBtn').addEventListener('click', () => {
-            this.confirmSelection();
         });
 
         // Close suggestions when clicking outside
@@ -240,9 +231,12 @@ class CityModal {
         }
 
         this.suggestionsContainer.innerHTML = results.map(city => `
-            <div class="city-suggestion-item" data-city="${city.name}" data-emoji="${city.emoji}">
+            <div class="city-suggestion-item" data-city="${city.name}" data-state="${city.state || ''}" data-emoji="${city.emoji}">
                 <span class="city-emoji">${city.emoji}</span>
-                <span>${city.name}</span>
+                <div>
+                    <strong>${city.name}</strong>
+                    <div style="font-size: 0.8rem; color: var(--color-dark-3);">${city.state || ''}</div>
+                </div>
             </div>
         `).join('');
 
@@ -251,42 +245,23 @@ class CityModal {
         // Add click listeners to suggestions
         this.suggestionsContainer.querySelectorAll('.city-suggestion-item').forEach(item => {
             item.addEventListener('click', () => {
-                this.selectCity(item.dataset.city, item.dataset.emoji);
+                this.selectCity(item.dataset.city, item.dataset.state || '', item.dataset.emoji);
                 this.suggestionsContainer.classList.remove('active');
-                this.searchInput.value = item.dataset.city;
+                this.searchInput.value = `${item.dataset.city}, ${item.dataset.state}`;
             });
         });
     }
 
-    // Select city
-    selectCity(cityName, emoji) {
-        this.selectedCityData = { name: cityName, emoji: emoji };
+    // Select city - Now auto-confirms immediately
+    selectCity(cityName, stateName, emoji) {
+        this.selectedCityData = { name: cityName, state: stateName, emoji: emoji };
 
-        // Remove previous selections
-        document.querySelectorAll('.city-card-mini.selected').forEach(card => {
-            card.classList.remove('selected');
-        });
-
-        // Mark selected
-        const card = document.querySelector(`.city-card-mini[data-city="${cityName}"]`);
-        if (card) {
-            card.classList.add('selected');
-        }
-
-        // Enable confirm button
-        document.getElementById('confirmCityBtn').disabled = false;
-    }
-
-    // Confirm selection
-    confirmSelection() {
-        if (!this.selectedCityData) return;
-
-        cityService.setSelectedCity(this.selectedCityData.name, this.selectedCityData.emoji);
-        this.hide();
+        // Save city immediately
+        cityService.setSelectedCity(cityName, emoji);
 
         // Dispatch custom event
         window.dispatchEvent(new CustomEvent('citySelected', {
-            detail: { city: this.selectedCityData.name, emoji: this.selectedCityData.emoji }
+            detail: { city: cityName, state: stateName, emoji: emoji }
         }));
 
         // Check if there's a pending service URL to navigate to
@@ -294,14 +269,19 @@ class CityModal {
         if (pendingServiceUrl) {
             sessionStorage.removeItem('pendingServiceUrl');
             // Navigate to the service with selected city
-            const city = this.selectedCityData.name;
             window.location.href = pendingServiceUrl.includes('?')
-                ? `${pendingServiceUrl}&city=${encodeURIComponent(city)}`
-                : `${pendingServiceUrl}?city=${encodeURIComponent(city)}`;
+                ? `${pendingServiceUrl}&city=${encodeURIComponent(cityName)}`
+                : `${pendingServiceUrl}?city=${encodeURIComponent(cityName)}`;
         } else {
-            // Reload page to apply city
+            // Just hide modal and reload to apply city
+            this.hide();
             window.location.reload();
         }
+    }
+
+    // Confirm selection - DEPRECATED, kept for compatibility
+    confirmSelection() {
+        // This function is no longer used as selection is now automatic
     }
 
     // Show modal

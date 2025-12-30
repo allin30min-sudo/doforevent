@@ -71,15 +71,163 @@
         </div>
     </nav>
 
-    <section class="hero"
-        style="min-height: 60vh; background: linear-gradient(135deg, rgba(236, 72, 153, 0.95) 0%, rgba(239, 68, 68, 0.95) 100%);">
+    <!-- Hero Section with Wedding Slider -->
+    <section class="hero" id="weddingHero" style="position: relative; min-height: 70vh; overflow: hidden;">
+        <!-- Background Wedding Image Slider -->
+        <div class="wedding-hero-slider">
+            <div class="wedding-hero-slide active" style="background-image: url('../assets/img/wedding-hero-1.jpg');">
+            </div>
+            <div class="wedding-hero-slide" style="background-image: url('../assets/img/wedding-hero-2.jpg');"></div>
+            <div class="wedding-hero-slide" style="background-image: url('../assets/img/wedding-hero-3.jpg');"></div>
+            <div class="wedding-hero-slide" style="background-image: url('../assets/img/wedding-hero-4.jpg');"></div>
+            <div class="wedding-hero-slide" style="background-image: url('../assets/img/wedding-hero-5.jpg');"></div>
+        </div>
+
+        <!-- Luxury Overlay -->
+        <div class="wedding-hero-overlay"></div>
+
+        <!-- Slider Indicators -->
+        <div class="wedding-hero-indicators">
+            <span class="wedding-indicator active" data-slide="0"></span>
+            <span class="wedding-indicator" data-slide="1"></span>
+            <span class="wedding-indicator" data-slide="2"></span>
+            <span class="wedding-indicator" data-slide="3"></span>
+            <span class="wedding-indicator" data-slide="4"></span>
+        </div>
+
+        <!-- Content -->
         <div class="hero-content">
-            <div style="margin-bottom: var(--spacing-md); opacity: 0.9;"><a href="../services.html"
-                    style="color: rgba(255,255,255,0.8);">← Back to All Services</a></div>
-            <h1>Wedding Services</h1>
-            <p>Creating unforgettable wedding experiences for your special day</p>
+            <div style="margin-bottom: var(--spacing-md); opacity: 0.9;">
+                <a href="../services.html" style="color: rgba(255,255,255,0.9);">← Back to All Services</a>
+            </div>
+            <h1 style="color: white !important; -webkit-text-fill-color: white !important;">Wedding Services</h1>
+            <p style="color: rgba(255,255,255,0.95);">Creating unforgettable wedding experiences for your special day
+            </p>
         </div>
     </section>
+
+    <style>
+        /* Premium Wedding Hero Slider Styles */
+        .wedding-hero-slider {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+
+        .wedding-hero-slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            opacity: 0;
+            transition: opacity 2.5s cubic-bezier(0.4, 0, 0.2, 1), transform 18s linear;
+            transform: scale(1);
+            will-change: transform, opacity;
+        }
+
+        .wedding-hero-slide.active {
+            opacity: 1;
+            transform: scale(1.15);
+        }
+
+        .wedding-hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, rgba(236, 72, 153, 0.35) 0%, rgba(239, 68, 68, 0.6) 100%);
+            z-index: 1;
+        }
+
+        .wedding-hero-indicators {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 12px;
+            z-index: 10;
+        }
+
+        .wedding-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.4);
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 2px solid rgba(255, 255, 255, 0.6);
+        }
+
+        .wedding-indicator:hover {
+            background: rgba(255, 255, 255, 0.7);
+            transform: scale(1.2);
+        }
+
+        .wedding-indicator.active {
+            background: white;
+            width: 40px;
+            border-radius: 6px;
+        }
+    </style>
+
+    <script>
+        // Premium Wedding Hero Slider Logic
+        document.addEventListener('DOMContentLoaded', () => {
+            const slides = document.querySelectorAll('.wedding-hero-slide');
+            const indicators = document.querySelectorAll('.wedding-indicator');
+            let currentSlide = 0;
+            let autoSlideInterval;
+
+            function showSlide(index) {
+                slides.forEach(slide => slide.classList.remove('active'));
+                indicators.forEach(indicator => indicator.classList.remove('active'));
+
+                currentSlide = (index + slides.length) % slides.length;
+                slides[currentSlide].classList.add('active');
+                indicators[currentSlide].classList.add('active');
+            }
+
+            function nextSlide() {
+                showSlide(currentSlide + 1);
+            }
+
+            function startAutoSlide() {
+                autoSlideInterval = setInterval(nextSlide, 6000);
+            }
+
+            function stopAutoSlide() {
+                clearInterval(autoSlideInterval);
+            }
+
+            // Indicator clicks
+            indicators.forEach((indicator, index) => {
+                indicator.addEventListener('click', () => {
+                    stopAutoSlide();
+                    showSlide(index);
+                    startAutoSlide();
+                });
+            });
+
+            // Start auto-slide
+            startAutoSlide();
+
+            // Pause on hover
+            const heroSection = document.getElementById('weddingHero');
+            if (heroSection) {
+                heroSection.addEventListener('mouseenter', stopAutoSlide);
+                heroSection.addEventListener('mouseleave', startAutoSlide);
+            }
+        });
+    </script>
 
     <section class="section">
         <div class="container">

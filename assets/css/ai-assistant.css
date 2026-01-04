@@ -138,34 +138,40 @@
 
 /* Chat Window */
 .ai-chat-window {
-    position: absolute;
-    bottom: 80px;
-    /* Secure gap from toggle button */
+    position: fixed;
+    top: 0;
     right: 0;
+    bottom: 0;
 
-    /* Larger dimensions for better readability */
+    /* Full height for better display */
     width: min(420px, calc(100vw - 40px));
-    height: min(650px, calc(100vh - 180px));
+    height: 100vh;
 
     background: var(--ai-bg);
     backdrop-filter: var(--ai-glass);
     -webkit-backdrop-filter: var(--ai-glass);
-    border-radius: 20px;
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    box-shadow: var(--ai-shadow);
+    border-radius: 0;
+    border-left: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: -5px 0 30px rgba(0, 0, 0, 0.2);
     display: flex;
     flex-direction: column;
     overflow: hidden;
-    transform: translateY(20px);
+    transform: translateX(100%);
     opacity: 0;
     pointer-events: none;
     transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    z-index: 10000;
 }
 
 .ai-chat-window.active {
-    transform: translateY(0);
+    transform: translateX(0);
     opacity: 1;
     pointer-events: auto;
+}
+
+/* Hide toggle button when chat is open */
+#ai-chat-widget .ai-chat-window.active+.ai-chat-toggle {
+    display: none;
 }
 
 /* Header */

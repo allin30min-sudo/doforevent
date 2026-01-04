@@ -8,10 +8,36 @@ class AIAssistant {
         this.kb = [];
         this.isOpen = false;
         this.messages = [];
+
+        // Booking State Management
+        this.bookingState = {
+            active: false,
+            step: 0,
+            data: {
+                category: null,
+                service: null,
+                date: null,
+                guests: null,
+                city: null,
+                budget: null,
+                requirements: null,
+                name: null,
+                phone: null,
+                email: null
+            }
+        };
+
+        // Keywords will be loaded from external ai-keywords.js file
+        // This keeps the code clean and makes keyword management easier
+        this.keywords = null;
+
         this.init();
     }
 
     async init() {
+        // Load keywords first
+        await this.loadKeywordsFromFile();
+
         try {
             // Attempt to load knowledge base
             const response = await fetch('/knowledge_base.json');
@@ -25,6 +51,53 @@ class AIAssistant {
             this.injectHTML();
             this.attachEvents();
         }
+    }
+
+    async loadKeywordsFromFile() {
+        try {
+            // Load external keyword dictionary file
+            const response = await fetch('/assets/js/ai-keywords.js');
+            if (response.ok) {
+                const scriptText = await response.text();
+                // Execute the script to get AI_KEYWORDS
+                const scriptElement = document.createElement('script');
+                scriptElement.textContent = scriptText;
+                document.head.appendChild(scriptElement);
+
+                // AI_KEYWORDS is now available globally
+                if (typeof AI_KEYWORDS !== 'undefined') {
+                    this.keywords = AI_KEYWORDS;
+                    console.log('✅ Keywords loaded from ai-keywords.js');
+                    return;
+                }
+            }
+        } catch (error) {
+            console.warn('⚠️ Could not load ai-keywords.js, using fallback keywords');
+        }
+
+        // Fallback keywords if external file fails
+        this.setFallbackKeywords();
+    }
+
+    setFallbackKeywords() {
+        // Minimal fallback keywords if external file doesn't load
+        this.keywords = {
+            info: ['janna', 'dekhna', 'batao', 'show', 'tell', 'kya kya', 'hai'],
+            booking: ['book', 'booking', 'karwani', 'plan', 'organize', 'quote'],
+            services: ['service', 'event', 'package', 'offer', 'providing', 'what kind', 'kya service'],
+            wedding: ['wedding', 'shadi', 'shaadi', 'marriage', 'vivah'],
+            corporate: ['corporate', 'office', 'company', 'business', 'conference'],
+            celebration: ['celebration', 'party', 'birthday', 'festival', 'diwali'],
+            entertainment: ['entertainment', 'concert', 'show', 'artist'],
+            greetings: ['hello', 'hi', 'namaste', 'namaskar'],
+            help: ['help', 'madad', 'assist'],
+            contact: ['contact', 'phone', 'email', 'whatsapp'],
+            yes: ['yes', 'haan', 'ok', 'sure'],
+            no: ['no', 'nahi', 'na'],
+            edit: ['edit', 'change', 'badlo'],
+            skip: ['skip', 'chhodo', 'none']
+        };
+        console.log('⚠️ Using fallback keywords');
     }
 
     injectHTML() {
@@ -57,6 +130,7 @@ class AIAssistant {
                         <div class="message bot">Namaste! Kaise help kar sakta hoon aapki? I can help you with bookings, services, and city details in Hindi, English, or Hinglish.</div>
                     </div>
                     <div class="typing" id="ai-typing" style="padding: 0 20px;">AI is thinking...</div>
+                    <div id="ai-quick-replies-container" style="padding: 10px 15px; max-height: 150px; overflow-y: auto; display: none;"></div>
                     <div class="ai-chat-input-area">
                         <button class="voice-btn" id="ai-voice">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -92,6 +166,11 @@ class AIAssistant {
             this.isOpen = !this.isOpen;
             win.classList.toggle('active', this.isOpen);
 
+            // Hide toggle button when chat opens
+            if (this.isOpen) {
+                toggle.style.display = 'none';
+            }
+
             // Hide greeting bubbles once interacted
             const greetings = document.getElementById('ai-greetings');
             if (greetings) greetings.style.display = 'none';
@@ -100,6 +179,9 @@ class AIAssistant {
         close.onclick = () => {
             this.isOpen = false;
             win.classList.remove('active');
+
+            // Show toggle button when chat closes
+            toggle.style.display = 'flex';
         };
 
         send.onclick = () => this.handleSendMessage();
@@ -130,16 +212,83 @@ class AIAssistant {
         this.showTyping(true);
 
         // --- AI LOGIC START ---
-        // Here we simulate the AI response using the knowledge base.
-        // In a real implementation, you'd send this to a Gemini API proxy.
         const response = await this.getAIResponse(text);
         // --- AI LOGIC END ---
 
         this.showTyping(false);
-        this.addMessage(response, 'bot');
+
+        // Check if response includes quick replies
+        if (typeof response === 'object' && response.text) {
+            // Remove any existing quick reply buttons first
+            const container = document.getElementById('ai-messages');
+            const existingButtons = container.querySelector('.quick-replies');
+            if (existingButtons) existingButtons.remove();
+
+            // Add the message
+            this.addMessage(response.text, 'bot');
+
+            // Check for WhatsApp button (final quote)
+            if (response.whatsappButton) {
+                // Hide quick replies container for final summary
+                const quickRepliesContainer = document.getElementById('ai-quick-replies-container');
+                if (quickRepliesContainer) quickRepliesContainer.style.display = 'none';
+
+                this.addWhatsAppButton(response.whatsappButton.link, response.whatsappButton.text);
+                // Add edit options as small buttons
+                if (response.editOptions) {
+                    this.addQuickReplyButtons(response.editOptions);
+                }
+            } else if (response.quickReplies) {
+                // Regular quick replies
+                this.addQuickReplyButtons(response.quickReplies);
+            }
+        } else {
+            this.addMessage(response, 'bot');
+        }
     }
 
-    addMessage(text, side) {
+    addWhatsAppButton(link, text) {
+        const container = document.getElementById('ai-messages');
+
+        const buttonDiv = document.createElement('div');
+        buttonDiv.className = 'whatsapp-button-container';
+        buttonDiv.style.cssText = 'padding: 15px 20px; display: flex; justify-content: center;';
+
+        const button = document.createElement('a');
+        button.href = link;
+        button.target = '_blank';
+        button.textContent = text;
+        button.style.cssText = `
+            background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+            color: white;
+            text-decoration: none;
+            padding: 16px 32px;
+            border-radius: 30px;
+            font-size: 16px;
+            font-weight: 600;
+            display: inline-block;
+            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4);
+            transition: all 0.3s ease;
+            text-align: center;
+            min-width: 280px;
+        `;
+
+        button.onmouseover = () => {
+            button.style.transform = 'translateY(-3px) scale(1.02)';
+            button.style.boxShadow = '0 6px 20px rgba(37, 211, 102, 0.5)';
+        };
+
+        button.onmouseout = () => {
+            button.style.transform = 'translateY(0) scale(1)';
+            button.style.boxShadow = '0 4px 15px rgba(37, 211, 102, 0.4)';
+        };
+
+        buttonDiv.appendChild(button);
+        container.appendChild(buttonDiv);
+        container.scrollTop = container.scrollHeight;
+    }
+
+    addMessage(text, side, quickReplies = null) {
         const container = document.getElementById('ai-messages');
         const div = document.createElement('div');
         div.className = `message ${side}`;
@@ -152,7 +301,67 @@ class AIAssistant {
 
         div.innerHTML = formattedText;
         container.appendChild(div);
+
+        // Add quick reply buttons if provided
+        if (quickReplies && quickReplies.length > 0) {
+            this.addQuickReplyButtons(quickReplies);
+        }
+
         container.scrollTop = container.scrollHeight;
+    }
+
+    addQuickReplyButtons(options) {
+        const container = document.getElementById('ai-quick-replies-container');
+        if (!container) return;
+
+        // Clear existing buttons
+        container.innerHTML = '';
+
+        // Show container
+        container.style.display = 'block';
+
+        const buttonsWrapper = document.createElement('div');
+        buttonsWrapper.style.cssText = 'display: flex; flex-wrap: wrap; gap: 8px;';
+
+        options.forEach(option => {
+            const button = document.createElement('button');
+            button.textContent = option;
+            button.style.cssText = `
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                color: white;
+                border: none;
+                padding: 12px 20px;
+                border-radius: 25px;
+                cursor: pointer;
+                font-size: 14px;
+                font-weight: 600;
+                transition: all 0.3s ease;
+                box-shadow: 0 3px 10px rgba(102, 126, 234, 0.3);
+                white-space: nowrap;
+            `;
+
+            button.onmouseover = () => {
+                button.style.transform = 'translateY(-2px)';
+                button.style.boxShadow = '0 5px 15px rgba(102, 126, 234, 0.4)';
+            };
+
+            button.onmouseout = () => {
+                button.style.transform = 'translateY(0)';
+                button.style.boxShadow = '0 3px 10px rgba(102, 126, 234, 0.3)';
+            };
+
+            button.onclick = () => {
+                // Simulate user clicking the option
+                document.getElementById('ai-input').value = option;
+                this.handleSendMessage();
+                // Hide buttons after selection
+                container.style.display = 'none';
+            };
+
+            buttonsWrapper.appendChild(button);
+        });
+
+        container.appendChild(buttonsWrapper);
     }
 
     showTyping(show) {
@@ -269,6 +478,249 @@ class AIAssistant {
         return resp;
     }
 
+    // ========== BOOKING FLOW SYSTEM ==========
+
+    startBooking(category) {
+        this.bookingState.active = true;
+        this.bookingState.step = 1;
+        this.bookingState.data.category = category;
+        return this.getBookingQuestion(1);
+    }
+
+    getBookingQuestion(step) {
+        const { data } = this.bookingState;
+
+        switch (step) {
+            case 1: // Service Selection
+                return this.getServiceOptions(data.category);
+            case 2: // Event Date
+                return `📅 **When is your ${data.service}?**\n\nPlease provide the event date (e.g., "15 March 2026" or "15/03/2026")`;
+            case 3: // Guest Count
+                return {
+                    text: `👥 **How many guests are you expecting?**\n\nSelect an option or type a custom number:`,
+                    quickReplies: ['50', '100', '150', '200', '300', '500+']
+                };
+            case 4: // City/Location
+                return {
+                    text: `📍 **Which city would you prefer?**\n\nWe operate across India. Select a city:`,
+                    quickReplies: ['Delhi', 'Mumbai', 'Bangalore', 'Goa', 'Jaipur', 'Udaipur', 'Pune', 'Hyderabad']
+                };
+            case 5: // Budget
+                return {
+                    text: `💰 **What's your budget range?** (Optional)\n\nSelect your budget range:`,
+                    quickReplies: ['Under 5 lakhs', '5-10 lakhs', '10-20 lakhs', '20+ lakhs', 'Flexible']
+                };
+            case 6: // Special Requirements
+                return {
+                    text: `📝 **Any special requirements or preferences?** (Optional)\n\nYou can type your requirements or skip this step:`,
+                    quickReplies: ['None', 'Skip']
+                };
+            case 7: // Name
+                return `👤 **What's your name?**\n\nPlease provide your full name.`;
+            case 8: // Phone
+                return `📱 **What's your contact number?**\n\nPlease provide your phone number (e.g., 9876543210)`;
+            case 9: // Email
+                return `📧 **What's your email address?**\n\nPlease provide your email for booking confirmation.`;
+            default:
+                return "Something went wrong. Let's start over!";
+        }
+    }
+
+    getServiceOptions(category) {
+        const services = {
+            'Wedding': [
+                { emoji: '💐', name: 'Wedding Decor' },
+                { emoji: '🏖️', name: 'Destination Wedding' },
+                { emoji: '👑', name: 'Luxury Wedding' },
+                { emoji: '📋', name: 'Wedding Planning' },
+                { emoji: '📸', name: 'Pre Wedding' },
+                { emoji: '🕉️', name: 'Traditional Wedding' }
+            ],
+            'Corporate': [
+                { emoji: '🤝', name: 'Dealers Meet' },
+                { emoji: '🚀', name: 'Product Launch' },
+                { emoji: '🎯', name: 'Conferences' },
+                { emoji: '👨‍👩‍👧', name: 'Family Day' },
+                { emoji: '🎊', name: 'Annual Day' }
+            ],
+            'Celebration': [
+                { emoji: '🪔', name: 'Diwali Celebration' },
+                { emoji: '🎨', name: 'Holi Celebration' },
+                { emoji: '🎄', name: 'Christmas Celebration' },
+                { emoji: '🎉', name: 'Theme Party' },
+                { emoji: '🎂', name: 'New Year Celebration' }
+            ],
+            'Entertainment': [
+                { emoji: '🎤', name: 'Live Concerts' },
+                { emoji: '👗', name: 'Fashion Show' },
+                { emoji: '🏆', name: 'Award Nights' },
+                { emoji: '🎪', name: 'Carnival Events' }
+            ]
+        };
+
+        const categoryServices = services[category] || [];
+        let text = `Perfect! Let's plan your **${category}** event. 🎉\n\n**Which service would you like?**\n\n`;
+
+        categoryServices.forEach(s => {
+            text += `${s.emoji} ${s.name}\n`;
+        });
+
+        text += `\nSelect a service from the buttons below:`;
+
+        // Extract service names for quick replies
+        const quickReplies = categoryServices.map(s => s.name);
+
+        return { text, quickReplies };
+    }
+
+    async processBookingStep(userInput) {
+        const { step, data } = this.bookingState;
+        const input = userInput.trim();
+
+        switch (step) {
+            case 1: // Service Selection
+                data.service = input;
+                this.bookingState.step = 2;
+                return this.getBookingQuestion(2);
+
+            case 2: // Date
+                if (this.validateDate(input)) {
+                    data.date = input;
+                    this.bookingState.step = 3;
+                    return this.getBookingQuestion(3);
+                }
+                return "Please provide a valid date (e.g., '15 March 2026' or '15/03/2026')";
+
+            case 3: // Guests
+                const guests = parseInt(input);
+                if (guests && guests > 0) {
+                    data.guests = guests;
+                    this.bookingState.step = 4;
+                    return this.getBookingQuestion(4);
+                }
+                return "Please enter a valid number of guests (e.g., 150)";
+
+            case 4: // City
+                data.city = input;
+                this.bookingState.step = 5;
+                return this.getBookingQuestion(5);
+
+            case 5: // Budget
+                data.budget = input.toLowerCase() === 'flexible' || input.toLowerCase() === 'skip' ? 'Flexible' : input;
+                this.bookingState.step = 6;
+                return this.getBookingQuestion(6);
+
+            case 6: // Requirements
+                data.requirements = input.toLowerCase() === 'none' || input.toLowerCase() === 'skip' ? 'None' : input;
+                this.bookingState.step = 7;
+                return this.getBookingQuestion(7);
+
+            case 7: // Name
+                if (input.length >= 2) {
+                    data.name = input;
+                    this.bookingState.step = 8;
+                    return this.getBookingQuestion(8);
+                }
+                return "Please provide your full name.";
+
+            case 8: // Phone
+                if (this.validatePhone(input)) {
+                    data.phone = input;
+                    this.bookingState.step = 9;
+                    return this.getBookingQuestion(9);
+                }
+                return "Please provide a valid 10-digit phone number.";
+
+            case 9: // Email
+                if (this.validateEmail(input)) {
+                    data.email = input;
+                    return this.generateFinalQuote();
+                }
+                return "Please provide a valid email address.";
+
+            default:
+                return "Something went wrong. Let's start over!";
+        }
+    }
+
+    validateDate(input) {
+        // Simple validation - accepts various date formats
+        return input.length >= 5 && (input.includes('/') || input.includes('-') || /\d/.test(input));
+    }
+
+    validatePhone(input) {
+        const cleaned = input.replace(/\D/g, '');
+        return cleaned.length === 10;
+    }
+
+    validateEmail(input) {
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(input);
+    }
+
+    generateFinalQuote() {
+        const { data } = this.bookingState;
+
+        const message = `🎉 *Event Booking Request - DoFor Event*
+
+📋 *Event Details:*
+• Category: ${data.category}
+• Service: ${data.service}
+• Date: ${data.date}
+• Expected Guests: ${data.guests}
+• Location: ${data.city}
+
+💰 *Budget Range:* ${data.budget}
+
+📝 *Special Requirements:*
+${data.requirements}
+
+👤 *Contact Information:*
+• Name: ${data.name}
+• Phone: ${data.phone}
+• Email: ${data.email}
+
+I would like to receive a detailed quote for this event. Please share package options, pricing, and availability.
+
+Thank you!`;
+
+        const whatsappLink = `https://wa.me/919650125822?text=${encodeURIComponent(message)}`;
+
+        // Store data before reset for edit functionality
+        const bookingData = { ...data };
+
+        // Reset booking state
+        this.resetBooking();
+
+        // Return object with special whatsapp button flag
+        return {
+            text: `✅ **Perfect! Your booking request is ready!**\n\n📋 **Summary:**\n• Event: ${bookingData.category} - ${bookingData.service}\n• Date: ${bookingData.date}\n• Guests: ${bookingData.guests}\n• City: ${bookingData.city}\n• Budget: ${bookingData.budget}\n• Requirements: ${bookingData.requirements}\n\n🎯 **Next Step:**\nClick the green WhatsApp button below to send your booking request. Our team will respond within 2 hours!`,
+            whatsappButton: {
+                link: whatsappLink,
+                text: '📱 Send Booking Request on WhatsApp'
+            },
+            editOptions: ['Edit Date', 'Edit Guests', 'Edit City', 'Start New Booking']
+        };
+    }
+
+    resetBooking() {
+        this.bookingState = {
+            active: false,
+            step: 0,
+            data: {
+                category: null,
+                service: null,
+                date: null,
+                guests: null,
+                city: null,
+                budget: null,
+                requirements: null,
+                name: null,
+                phone: null,
+                email: null
+            }
+        };
+    }
+
     async getAIResponse(userText) {
         let query = userText.toLowerCase().trim();
         const isEnglish = /^[a-zA-Z0-9\s?!.,]*$/.test(userText);
@@ -276,6 +728,104 @@ class AIAssistant {
         // --- Typo Corrections ---
         if (query.includes('weeding') || query.includes('weding')) query = query.replace(/weeding|weding/g, 'wedding');
         if (query.includes('birtday') || query.includes('bday')) query = query.replace(/birtday|bday/g, 'birthday');
+
+        // ========== EDIT FUNCTIONALITY ==========
+        // Handle edit button clicks from final summary
+        if (query.includes('edit date')) {
+            this.bookingState.active = true;
+            this.bookingState.step = 2; // Go back to date step
+            return this.getBookingQuestion(2);
+        }
+        if (query.includes('edit guests') || query.includes('edit guest')) {
+            this.bookingState.active = true;
+            this.bookingState.step = 3; // Go back to guests step
+            return this.getBookingQuestion(3);
+        }
+        if (query.includes('edit city') || query.includes('edit location')) {
+            this.bookingState.active = true;
+            this.bookingState.step = 4; // Go back to city step
+            return this.getBookingQuestion(4);
+        }
+        if (query.includes('start new booking') || query.includes('new booking')) {
+            this.resetBooking();
+            return {
+                text: isEnglish
+                    ? "Let's start fresh! Which type of event are you planning?\n\n🏢 **Corporate Events**\n💒 **Weddings**\n🎉 **Celebrations**\n🎭 **Entertainment**\n\nSelect a category:"
+                    : "Chalo naye se shuru karte hain! Kaunsa event plan kar rahe hain?\n\n🏢 **Corporate Events**\n💒 **Weddings**\n🎉 **Celebrations**\n🎭 **Entertainment**\n\nCategory select karein:",
+                quickReplies: ['Wedding', 'Corporate', 'Celebration', 'Entertainment']
+            };
+        }
+
+        // ========== BOOKING FLOW PRIORITY ==========
+        // If booking is active, process the current step
+        if (this.bookingState.active) {
+            return await this.processBookingStep(userText);
+        }
+
+        // Detect booking intent and start booking flow using keyword dictionary
+        const isBookingIntent = this.keywords.booking.some(kw => query.includes(kw));
+
+        if (isBookingIntent) {
+            // Detect category using keyword dictionary
+            const categories = {
+                'wedding': this.keywords.wedding,
+                'corporate': this.keywords.corporate,
+                'celebration': this.keywords.celebration,
+                'entertainment': this.keywords.entertainment
+            };
+
+            for (const [category, keywords] of Object.entries(categories)) {
+                if (keywords.some(kw => query.includes(kw))) {
+                    const categoryName = category.charAt(0).toUpperCase() + category.slice(1);
+                    return this.startBooking(categoryName);
+                }
+            }
+
+            // No specific category mentioned - ask user to choose
+            return {
+                text: isEnglish
+                    ? "I'd love to help you book! Which type of event are you planning?\n\n🏢 **Corporate Events**\n💒 **Weddings**\n🎉 **Celebrations**\n🎭 **Entertainment**\n\nSelect a category from the buttons below:"
+                    : "Main aapki booking me help karunga! Aap kaunsa event plan kar rahe hain?\n\n🏢 **Corporate Events**\n💒 **Weddings**\n🎉 **Celebrations**\n🎭 **Entertainment**\n\nNeeche se category select karein:",
+                quickReplies: ['Wedding', 'Corporate', 'Celebration', 'Entertainment']
+            };
+        }
+
+        // Check if user is just mentioning a category (to start booking OR get info)
+        const categoryMentions = {
+            'Wedding': this.keywords.wedding,
+            'Corporate': this.keywords.corporate,
+            'Celebration': this.keywords.celebration,
+            'Entertainment': this.keywords.entertainment
+        };
+
+        // Detect information request using keyword dictionary
+        const isInfoRequest = this.keywords.info.some(kw => query.includes(kw));
+
+        for (const [category, keywords] of Object.entries(categoryMentions)) {
+            const categoryMatch = keywords.some(kw => query.includes(kw));
+
+            if (categoryMatch) {
+                // If it's an info request or general mention, show services
+                if (isInfoRequest || query.includes('event') || query.includes('hai')) {
+                    return this.showCategoryServices(category);
+                }
+                // Otherwise start booking
+                return this.startBooking(category);
+            }
+        }
+
+        // Enhanced detection for general service/package queries using keyword dictionary
+        const isServiceQuery = this.keywords.services.some(kw => query.includes(kw));
+
+        // If user asks about packages/services in general
+        if (isInfoRequest || isServiceQuery) {
+            return {
+                text: isEnglish
+                    ? "I can show you our services! Which category interests you?\n\n🏢 **Corporate Events**\n💒 **Weddings**\n🎉 **Celebrations**\n🎭 **Entertainment**\n\nSelect a category to see all services and packages:"
+                    : "Main aapko services dikha sakta hoon! Kaunsi category chahiye?\n\n🏢 **Corporate Events**\n💒 **Weddings**\n🎉 **Celebrations**\n🎭 **Entertainment**\n\nCategory select karein:",
+                quickReplies: ['Wedding', 'Corporate', 'Celebration', 'Entertainment']
+            };
+        }
 
         // --- 1. GREETINGS & SMALL TALK ---
         const quickResponses = {
@@ -339,140 +889,7 @@ class AIAssistant {
             }
         }
 
-        // --- 3. SMART BOOKING DETECTION ---
-        const bookingKeywords = ['book', 'booking', 'karwani', 'karna chahta', 'karna hai', 'plan', 'organize', 'hire', 'quote', 'price', 'package'];
-        const isBookingIntent = bookingKeywords.some(kw => query.includes(kw));
-
-        // Define main categories with sub-service mappings
-        const mainCategories = {
-            'wedding': {
-                name: 'Wedding',
-                nameHindi: 'Shaadi',
-                keywords: ['wedding', 'shadi', 'shaadi', 'marriage', 'vivah'],
-                subServices: [
-                    { emoji: '💐', name: 'Wedding Decor', url: 'wedding-decor.html' },
-                    { emoji: '🏖️', name: 'Destination Wedding', url: 'destination-wedding.html' },
-                    { emoji: '👑', name: 'Luxury Wedding', url: 'luxury-wedding.html' },
-                    { emoji: '📋', name: 'Wedding Planning', url: 'wedding-planning.html' },
-                    { emoji: '📸', name: 'Pre Wedding', url: 'pre-wedding.html' },
-                    { emoji: '🕉️', name: 'Traditional Wedding', url: 'traditional-wedding.html' }
-                ]
-            },
-            'corporate': {
-                name: 'Corporate Events',
-                nameHindi: 'Corporate Events',
-                keywords: ['corporate', 'office', 'company', 'business', 'conference', 'seminar', 'launch', 'dealer'],
-                subServices: [
-                    { emoji: '🤝', name: 'Dealers Meet', url: 'dealers-meet.html' },
-                    { emoji: '🚀', name: 'Product Launch', url: 'product-launch.html' },
-                    { emoji: '🎯', name: 'Conferences', url: 'conferences.html' },
-                    { emoji: '👨‍👩‍👧', name: 'Family Day', url: 'family-day.html' },
-                    { emoji: '🎊', name: 'Annual Day', url: 'annual-day.html' }
-                ]
-            },
-            'celebration': {
-                name: 'Celebrations',
-                nameHindi: 'Celebrations',
-                keywords: ['celebration', 'party', 'birthday', 'anniversary', 'festival', 'diwali', 'holi', 'christmas'],
-                subServices: [
-                    { emoji: '🪔', name: 'Diwali Celebration', url: 'diwali-celebrations.html' },
-                    { emoji: '🎨', name: 'Holi Celebration', url: 'holi-celebration.html' },
-                    { emoji: '🎄', name: 'Christmas Celebration', url: 'christmas-celebration.html' },
-                    { emoji: '🎉', name: 'Theme Party', url: 'theme-party.html' },
-                    { emoji: '🎂', name: 'New Year Celebration', url: 'new-year-celebration.html' }
-                ]
-            },
-            'entertainment': {
-                name: 'Entertainment',
-                nameHindi: 'Entertainment',
-                keywords: ['entertainment', 'concert', 'show', 'artist', 'fashion', 'carnival', 'award'],
-                subServices: [
-                    { emoji: '🎤', name: 'Live Concerts', url: 'live-concerts.html' },
-                    { emoji: '👗', name: 'Fashion Show', url: 'fashion-show.html' },
-                    { emoji: '🏆', name: 'Award Nights', url: 'award-nights.html' },
-                    { emoji: '🎪', name: 'Carnival Events', url: 'carnival-events.html' }
-                ]
-            }
-        };
-
-        // --- 4. CHECK IF USER IS ASKING ABOUT A SPECIFIC SUB-SERVICE ---
-        // Skip if query is too general (contains "service" or "event")
-        const isGeneralQuery = query.includes(' service') || query.includes(' services') || query.includes(' event') || query.includes(' events');
-
-        if (!isGeneralQuery) {
-            for (const [catId, catData] of Object.entries(mainCategories)) {
-                for (const subService of catData.subServices) {
-                    const serviceName = subService.name.toLowerCase();
-                    const serviceWords = serviceName.split(' ').filter(w => w.length > 3);
-
-                    // Check if ALL significant words from service name are in query
-                    const matchCount = serviceWords.filter(word => query.includes(word)).length;
-
-                    // Only match if at least 2 words match (for multi-word services) or exact match for single-word
-                    if ((serviceWords.length >= 2 && matchCount >= 2) ||
-                        (serviceWords.length === 1 && matchCount === 1 && query.includes(serviceName))) {
-                        return this.showPackagesForService(subService.name, subService.url);
-                    }
-                }
-            }
-        }
-
-        // --- 5. DETECT CATEGORY MENTION (Show Sub-Services with KB descriptions) ---
-        for (const [catId, catData] of Object.entries(mainCategories)) {
-            const categoryNameMatch = query === catData.name.toLowerCase() ||
-                query === catId ||
-                (query.includes(catId) && query.split(/\s+/).length <= 3);
-
-            if (categoryNameMatch || (isBookingIntent && catData.keywords.some(kw => query.includes(kw)))) {
-                let resp = isEnglish
-                    ? `Great! Here are all our **${catData.name}** services with details:\n\n`
-                    : `Bahut badhiya! Ye hamare **${catData.nameHindi}** services hain details ke saath:\n\n`;
-
-                catData.subServices.forEach(sub => {
-                    const kbMatch = this.kb.find(item => item.url.includes(sub.url));
-
-                    resp += `${sub.emoji} **${sub.name}**\n`;
-
-                    // Show detailed description from KB
-                    if (kbMatch) {
-                        if (kbMatch.content) {
-                            const cleanContent = kbMatch.content.replace(/\s+/g, ' ').trim();
-                            resp += `${cleanContent.substring(0, 120)}...\n\n`;
-                        }
-
-                        // Show key features from headings
-                        if (kbMatch.headings && kbMatch.headings.length > 2) {
-                            const relevantHeadings = kbMatch.headings
-                                .filter(h => !h.includes('?') && !h.includes('Ready') && !h.includes('Explore') && !h.includes('Related'))
-                                .slice(0, 3);
-
-                            if (relevantHeadings.length > 0) {
-                                resp += `**Key Features:** ${relevantHeadings.join(' • ')}\n\n`;
-                            }
-                        }
-                    } else {
-                        resp += `Premium event planning and execution services.\n\n`;
-                    }
-
-                    resp += `---\n\n`;
-                });
-
-                resp += isEnglish
-                    ? `📱 **To see packages and book:** Just type the service name (e.g., "Destination Wedding" or "Product Launch")\n\n💬 **Need help?** Ask me anything about these services!`
-                    : `📱 **Packages aur booking ke liye:** Bas service ka naam likhiye (jaise "Destination Wedding" ya "Product Launch")\n\n💬 **Madad chahiye?** Mujhse kuch bhi puchiye!`;
-
-                return resp;
-            }
-        }
-
-        // --- 6. BOOKING WITHOUT CATEGORY ---
-        if (isBookingIntent) {
-            return isEnglish
-                ? "I'd love to help you book! Which type of event are you planning?\n\n🏢 Corporate Events\n💒 Weddings\n🎉 Celebrations\n🎭 Entertainment\n\nJust tell me the category name!"
-                : "Main aapki booking me help karunga! Aap kaunsa event plan kar rahe hain?\n\n🏢 Corporate Events\n💒 Weddings\n🎉 Celebrations\n🎭 Entertainment\n\nBas category ka naam batayiye!";
-        }
-
-        // --- 7. SMART SEARCH WITH DETAILED INFO ---
+        // --- 3. SMART SEARCH WITH DETAILED INFO ---
         const words = query.split(/\s+/).filter(w => w.length > 2);
         let bestMatches = this.kb.map(item => {
             let score = 0;
@@ -508,32 +925,31 @@ class AIAssistant {
                 resp += `✨ **${title}**\n\n`;
                 if (keyInfo) resp += `${keyInfo}\n\n`;
                 if (mainHeadings) resp += `📋 Topics: ${mainHeadings}\n\n`;
-                resp += `🔗 [View Complete Details](/${match.url})\n\n`;
                 resp += `---\n\n`;
             });
 
             resp += isEnglish
-                ? "Want to see packages? Just say the service name (e.g., 'Destination Wedding')!"
-                : "Packages dekhne hain? Bas service ka naam boliye (jaise 'Destination Wedding')!";
+                ? "💬 Want to book? Just say 'book [service name]'!"
+                : "💬 Book karna hai? Bas 'book [service name]' kahiye!";
 
             return resp;
         }
 
-        // --- 8. CONTACT & FALLBACK ---
-        if (query.includes('contact') || query.includes('phone') || query.includes('whatsapp')) {
-            const whatsappMsg = encodeURIComponent("Hello! I'd like to know more about DoFor Event services.");
-            return `You can reach us anytime:\n📞 **Call/WhatsApp:** [+91 9650125822](https://wa.me/919650125822?text=${whatsappMsg})\n✉️ **Email:** info@doforevent.com\n\nWe're available 24/7!`;
+        // --- 4. CONTACT & FALLBACK ---
+        if (query.includes('contact') || query.includes('phone') || query.includes('email') || query.includes('sampark')) {
+            return isEnglish
+                ? "📞 **Contact Us:**\n\n• Phone: +91 96501 25822\n• Email: info@doforevent.com\n• WhatsApp: [Chat Now](https://wa.me/919650125822)\n\nWe're available 24/7 to help you!"
+                : "📞 **Sampark Karein:**\n\n• Phone: +91 96501 25822\n• Email: info@doforevent.com\n• WhatsApp: [Abhi Chat Karein](https://wa.me/919650125822)\n\nHum 24/7 available hain!";
         }
 
+        // Final fallback
         return isEnglish
-            ? "I'm not sure I understood. Are you looking to book a Wedding, Corporate Event, or Party? Or would you like to speak with our team?"
-            : "Main samajh nahi paya. Kya aap Wedding, Corporate Event ya Party book karna chahte hain? Ya team se baat karna chahenge?";
+            ? "I'm here to help you plan amazing events! You can:\n\n• Ask about our services\n• Get booking information\n• Learn about packages\n• Contact our team\n\nWhat would you like to know?"
+            : "Main aapki event planning me madad karne ke liye hoon! Aap:\n\n• Services ke baare me puch sakte hain\n• Booking information le sakte hain\n• Packages dekh sakte hain\n• Team se contact kar sakte hain\n\nKya jaanna chahenge?";
     }
 }
 
-// Global initialization
-if (typeof document !== 'undefined') {
-    window.addEventListener('load', () => {
-        window.aiAssistant = new AIAssistant();
-    });
-}
+// Initialize the AI Assistant when DOM is ready
+document.addEventListener('DOMContentLoaded', () => {
+    window.aiAssistant = new AIAssistant();
+});
